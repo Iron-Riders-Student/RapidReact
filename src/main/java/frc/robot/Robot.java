@@ -7,11 +7,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 public class Robot extends TimedRobot {
     private GenericHID controller;
     private MecanumDrive mecanumDrive;
+    private Intake intake;
 
     @Override
     public void robotInit() {
         controller = new GenericHID(0);
         mecanumDrive = new MecanumDrive();
+        intake = new Intake(1); // TODO: Change port to ports file, add button on controller
     }
 
     @Override
