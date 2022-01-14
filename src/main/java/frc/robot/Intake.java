@@ -18,7 +18,7 @@ public class Intake {
         intakeMotor.set(-1);  // TODO: Find good speed
     }
 
-    public void stop() {
+    public void stop() {  // Is this really needed?
         intakeMotor.set(0);
     }
 }
