@@ -3,7 +3,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 
 public class Robot extends TimedRobot {
     private GenericHID controller;
@@ -11,7 +10,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        controller = new XboxController(0);
+        controller = new GenericHID(0);
         mecanumDrive = new MecanumDrive();
     }
 
