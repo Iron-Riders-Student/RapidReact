@@ -1,4 +1,4 @@
-// Code from Github (MecanumBot/src/main/java/frc/robot/Robot.java) (1/12/2022)s:
+// Code from Github (MecanumBot/src/main/java/frc/robot/Robot.java) (1/12/2022):
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
