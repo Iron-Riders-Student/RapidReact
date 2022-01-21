@@ -3,6 +3,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Robot extends TimedRobot {
     private GenericHID controller;
@@ -12,6 +13,25 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         controller = new GenericHID(0);
         mecanumDrive = new MecanumDrive();
+   }
+
+    @Override
+    public void autonomousPeriodic() {
+        if (Timer.getMatchTime() > (15.0 - 5.0)) {
+            // todo: intake.intakeBall();
+            mecanumDrive.updateSpeed(0.0, Constants.kAutoSpeed, 0.0);
+        } else {
+            // todo: intake.stop();
+            mecanumDrive.updateSpeed(0.0, 0.0, 0.0);
+        }
+
+        if (Timer.getMatchTime() < (15.0 - 5.0) && Timer.getMatchTime() > (15.0 - 10.0)) {
+            // todo: indexer.releaseBall();
+            // todo: shooter.shoot();
+        } else {
+            // todo: indexer.acceptNextBall();
+            // todo: shooter.stop();
+        }
     }
 
     @Override
