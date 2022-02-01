@@ -35,6 +35,6 @@ public class Vision {
         final double cameraAngleToGround = 45;
 
         // d = (h2-h1) / tan(a1+a2)  - https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
-        return (targetHeight-cameraHeight) / Math.tan(cameraAngleToGround+getYAngleOffset()); // "import java.lang.Math.*;" didn't get rid of error
+        return (targetHeight-cameraHeight) / Math.tan(cameraAngleToGround+getYAngleOffset());
     }
 }
