@@ -29,7 +29,12 @@ public class Vision {
         SmartDashboard.putBoolean("limelightTargets", getHasTargets());
     }
 
-    // public double estimateDistance() {
-    //     todo
-    // }
+    public double estimateDistance() {
+        final double targetHeight = 104; // upper hub is 8ft. 8in./104 in. (~264cm), lower hub is 3ft. 5in./41 in. (~104cm)  - pg 26 of manual
+        final double cameraHeight = 2;
+        final double cameraAngleToGround = 45;
+
+        // d = (h2-h1) / tan(a1+a2)  - https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
+        return (targetHeight-cameraHeight) / Math.tan(cameraAngleToGround+getYAngleOffset()); // "import java.lang.Math.*;" didn't get rid of error
+    }
 }
