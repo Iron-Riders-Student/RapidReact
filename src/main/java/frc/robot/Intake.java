@@ -42,7 +42,7 @@ public class Intake {
     }
 
     public void intakeBall() {
-        intakeMotor.set(2);  // TODO: Find good speed
+        intakeMotor.set(1);  // TODO: Find good speed
     }
 
     public void spitOutBall() {
