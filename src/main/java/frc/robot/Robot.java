@@ -13,7 +13,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         controller = new GenericHID(0);
         mecanumDrive = new MecanumDrive();
-        intake = new Intake(1); // TODO: Change port to ports file, add button on controller
+        intake = new Intake(1, 2); // TODO: Change port to ports file, add button on controller
     }
 
     @Override
@@ -22,6 +22,6 @@ public class Robot extends TimedRobot {
             mecanumDrive.invertDrive();
         }
         mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1), controller.getRawAxis(2));
-        
+        intake.updateDashboard();
     }
 }
