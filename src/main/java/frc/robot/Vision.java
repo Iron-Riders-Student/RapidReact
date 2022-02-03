@@ -30,8 +30,8 @@ public class Vision {
     }
 
     public double estimateDistance() {
-        final double targetHeight = 104; // upper hub is 8ft. 8in./104 in. (~264cm), lower hub is 3ft. 5in./41 in. (~104cm)  - pg 26 of manual
-        final double cameraHeight = 30;
+        final double targetHeight = 102.625; // upper hub is 8ft. 8in./104 in. (~264cm), lower hub is 3ft. 5in./41 in. (~104cm)  - pg 26 of manual
+        final double cameraHeight = 1.8;
         final double cameraAngleToGround = 40.91;
         final double degrees = cameraAngleToGround+getYAngleOffset();
         // d = (h2-h1) / tan(a1+a2)  - https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
