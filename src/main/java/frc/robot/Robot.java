@@ -6,20 +6,17 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 public class Robot extends TimedRobot {
     private GenericHID controller;
-    private MecanumDrive mecanumDrive;
+    private Shooter shooter;
 
     @Override
     public void robotInit() {
         controller = new GenericHID(0);
-        mecanumDrive = new MecanumDrive();
+        shooter = new Shooter(Constants.SHOOTER_PORT_1, Constants.SHOOTER_PORT_2);
     }
 
     @Override
     public void teleopPeriodic() {
-        if(controller.getRawButtonPressed(1)){
-            mecanumDrive.invertDrive();
-        }
-        mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1), controller.getRawAxis(2));
-        
+        shooter.updateNumbers();
+        shooter.shoot(controller.getRawAxis(3) * Constants.SHOOTER_MAX_SPEED);
     }
 }

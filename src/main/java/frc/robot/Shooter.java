@@ -12,7 +12,6 @@ public class Shooter {
     private CANSparkMax bottomMotor, topMotor;
     private SparkMaxPIDController topPID, bottomPID;
     private double kP, kI, kD, kMaxOutput, kMinOutput, tPR /* maxRPM */;
-    private final double WHEEL_RADIUS = 0.0;
     private double topMotorChange = 1.0; // 1.0 is the same, 2.0 is twice as fast
 
     public Shooter(int bottomPort, int topPort) {
@@ -40,12 +39,12 @@ public class Shooter {
     }
 
     public void shoot(double velocity) {
-        velocity = (velocity * tPR) / (2 * Math.PI * WHEEL_RADIUS);
+        velocity = (velocity * tPR) / (2 * Math.PI * Constants.SHOOTER_WHEEL_RADIUS);
         topPID.setReference(velocity * topMotorChange, ControlType.kVelocity);
         bottomPID.setReference(velocity, ControlType.kVelocity);
     }
 
-    private void updateNumbers() {
+    public void updateNumbers() {
         kP = SmartDashboard.getNumber("P Gain", kP);
         kI = SmartDashboard.getNumber("I Gain", kI);
         kD = SmartDashboard.getNumber("D Gain", kD);
