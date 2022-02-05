@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter {
     private CANSparkMax bottomMotor, topMotor;
     private SparkMaxPIDController topPID, bottomPID;
-    private double kP, kI, kD, kMaxOutput, kMinOutput, tPR /* maxRPM */;
+    private double kP = 1.0, kI = 0.0, kD = 0.0, kMaxOutput, kMinOutput, tPR /* maxRPM */;
     private double topMotorChange = 1.0; // 1.0 is the same, 2.0 is twice as fast
 
     public Shooter(int bottomPort, int topPort) {
