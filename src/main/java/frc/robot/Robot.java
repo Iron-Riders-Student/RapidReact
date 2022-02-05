@@ -1,25 +1,20 @@
-// Code from Github (MecanumBot/src/main/java/frc/robot/Robot.java) (1/12/2022):
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
-    private GenericHID controller;
-    private MecanumDrive mecanumDrive;
+    private Servo servo;
 
     @Override
     public void robotInit() {
-        controller = new GenericHID(0);
-        mecanumDrive = new MecanumDrive();
+        servo = new Servo(0);
+        SmartDashboard.putNumber("servo", 0.5);
     }
 
     @Override
     public void teleopPeriodic() {
-        if(controller.getRawButtonPressed(1)){
-            mecanumDrive.invertDrive();
-        }
-        mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1), controller.getRawAxis(2));
-        
+        servo.set(SmartDashboard.getNumber("servo", 0.5));
     }
 }
