@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter {
     private CANSparkMax bottomMotor, topMotor;
     private SparkMaxPIDController topPID, bottomPID;
-    private double kP = 0.00005, kI = 0.0, kD = 0.0, kMaxOutput, kMinOutput, tPR /* maxRPM */;
+    private double kP = 0.00005, kI = 0.0, kD = 0.0, kMaxOutput, kMinOutput;
     private double topMotorChange = 1.0; // 1.0 is the same, 2.0 is twice as fast
 
     public Shooter(int bottomPort, int topPort) {
@@ -20,10 +20,8 @@ public class Shooter {
         topMotor = new CANSparkMax(topPort, MotorType.kBrushless);
         bottomMotor.setIdleMode(IdleMode.kCoast);
         topMotor.setIdleMode(IdleMode.kCoast);
-        RelativeEncoder bottomEnco = bottomMotor.getEncoder();
         topPID = topMotor.getPIDController();
         bottomPID = bottomMotor.getPIDController();
-        tPR = bottomEnco.getCountsPerRevolution();
         topMotor.setInverted(true);
         kMaxOutput = 1;
         kMinOutput = -1;
@@ -31,7 +29,6 @@ public class Shooter {
         SmartDashboard.putNumber("I Gain", kI);
         SmartDashboard.putNumber("D Gain", kD);
         SmartDashboard.putNumber("Top Motor Change", topMotorChange);
-        SmartDashboard.putNumber("Ticks per Revolution", tPR);
         topPID.setOutputRange(kMinOutput, kMaxOutput);
         bottomPID.setOutputRange(kMinOutput, kMaxOutput);
         updateNumbers();
@@ -42,10 +39,10 @@ public class Shooter {
         bottomMotor.set(0);
     }
 
-    public void shoot(double velocity) {
-        velocity = (velocity * tPR);// / (2 * Math.PI * Constants.SHOOTER_WHEEL_RADIUS);
-        topPID.setReference(velocity * topMotorChange, ControlType.kVelocity);
-        bottomPID.setReference(velocity, ControlType.kVelocity);
+    public void shoot(double rpm) {
+        // double velocity = rpm / (2 * Math.PI * Constants.SHOOTER_WHEEL_RADIUS);
+        topPID.setReference(rpm * topMotorChange, ControlType.kVelocity);
+        bottomPID.setReference(rpm, ControlType.kVelocity);
     }
 
     public void updateNumbers() {
