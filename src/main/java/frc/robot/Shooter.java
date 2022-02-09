@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,12 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter {
     private CANSparkMax bottomMotor, topMotor;
     private SparkMaxPIDController topPID, bottomPID;
-    private double kP = 1.0, kI = 0.0, kD = 0.0, kMaxOutput, kMinOutput, tPR /* maxRPM */;
+    private double kP = 0.00005, kI = 0.0, kD = 0.0, kMaxOutput, kMinOutput, tPR /* maxRPM */;
     private double topMotorChange = 1.0; // 1.0 is the same, 2.0 is twice as fast
 
     public Shooter(int bottomPort, int topPort) {
         bottomMotor = new CANSparkMax(bottomPort, MotorType.kBrushless);
         topMotor = new CANSparkMax(topPort, MotorType.kBrushless);
+        bottomMotor.setIdleMode(IdleMode.kCoast);
+        topMotor.setIdleMode(IdleMode.kCoast);
         RelativeEncoder bottomEnco = bottomMotor.getEncoder();
         topPID = topMotor.getPIDController();
         bottomPID = bottomMotor.getPIDController();
@@ -28,6 +31,7 @@ public class Shooter {
         SmartDashboard.putNumber("I Gain", kI);
         SmartDashboard.putNumber("D Gain", kD);
         SmartDashboard.putNumber("Top Motor Change", topMotorChange);
+        SmartDashboard.putNumber("Ticks per Revolution", tPR);
         topPID.setOutputRange(kMinOutput, kMaxOutput);
         bottomPID.setOutputRange(kMinOutput, kMaxOutput);
         updateNumbers();
@@ -39,7 +43,7 @@ public class Shooter {
     }
 
     public void shoot(double velocity) {
-        velocity = (velocity * tPR) / (2 * Math.PI * Constants.SHOOTER_WHEEL_RADIUS);
+        velocity = (velocity * tPR);// / (2 * Math.PI * Constants.SHOOTER_WHEEL_RADIUS);
         topPID.setReference(velocity * topMotorChange, ControlType.kVelocity);
         bottomPID.setReference(velocity, ControlType.kVelocity);
     }
@@ -55,5 +59,6 @@ public class Shooter {
         topPID.setP(kP);
         topPID.setI(kI);
         topPID.setD(kD);
+        SmartDashboard.putNumber("speed", bottomMotor.getEncoder().getVelocity());
     }
 }
