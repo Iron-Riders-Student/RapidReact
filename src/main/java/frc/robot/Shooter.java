@@ -1,18 +1,18 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
-    private CANSparkMax bottomMotor, topMotor;
+    public CANSparkMax bottomMotor, topMotor;
     private SparkMaxPIDController topPID, bottomPID;
-    private double kP = 0.00005, kI = 0.0, kD = 0.0, kMaxOutput, kMinOutput;
+    public double kP = 0.00017, kI = 0.0000007, kD = 0.0, kMaxOutput, kMinOutput;
     private double topMotorChange = 1.0; // 1.0 is the same, 2.0 is twice as fast
 
     public Shooter(int bottomPort, int topPort) {
@@ -23,6 +23,7 @@ public class Shooter {
         topPID = topMotor.getPIDController();
         bottomPID = bottomMotor.getPIDController();
         topMotor.setInverted(true);
+        bottomMotor.setInverted(true);
         kMaxOutput = 1;
         kMinOutput = -1;
         SmartDashboard.putNumber("P Gain", kP);
@@ -40,6 +41,7 @@ public class Shooter {
     }
 
     public void shoot(double rpm) {
+        updateNumbers();
         // double velocity = rpm / (2 * Math.PI * Constants.SHOOTER_WHEEL_RADIUS);
         topPID.setReference(rpm * topMotorChange, ControlType.kVelocity);
         bottomPID.setReference(rpm, ControlType.kVelocity);
@@ -49,6 +51,7 @@ public class Shooter {
         kP = SmartDashboard.getNumber("P Gain", kP);
         kI = SmartDashboard.getNumber("I Gain", kI);
         kD = SmartDashboard.getNumber("D Gain", kD);
+        Robot.rpm = SmartDashboard.getNumber("RPM", Robot.rpm);
         topMotorChange = SmartDashboard.getNumber("Top Motor Change", topMotorChange);
         bottomPID.setP(kP);
         bottomPID.setI(kI);
@@ -56,6 +59,6 @@ public class Shooter {
         topPID.setP(kP);
         topPID.setI(kI);
         topPID.setD(kD);
-        SmartDashboard.putNumber("speed", bottomMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("RPM", Robot.rpm);
     }
 }
