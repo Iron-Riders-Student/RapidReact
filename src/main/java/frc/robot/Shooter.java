@@ -61,4 +61,11 @@ public class Shooter {
         topPID.setD(kD);
         SmartDashboard.putNumber("RPM", Robot.rpm);
     }
+    
+    private static final double c = 1372.0;
+    private static final double b = 19.5;
+    private static final double a = 2.92;
+    public static double distanceToRPM(double distance) {
+        return c + b * distance + a * distance * distance;
+    }
 }
