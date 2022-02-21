@@ -5,10 +5,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
-    private Vision vision;
     private GenericHID controller;
     private Shooter shooter;
     public static double rpm = 1000;
+    public Vision vision;
 
     @Override
     public void robotInit() {
@@ -32,11 +32,12 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("speed", shooter.bottomMotor.getEncoder().getVelocity());
 
        if (controller.getRawButtonPressed(1)) {
-           shooter.shoot(SmartDashboard.getNumber("RPM", rpm));
+          // shooter.shoot(SmartDashboard.getNumber("RPM", rpm));
+          vision.distanceAssist();
        }
        else if (controller.getRawButtonPressed(2)) {
-           shooter.shoot(0);
+           //shooter.shoot(0);
        }
 
-    }
-}
+     }
+  }
