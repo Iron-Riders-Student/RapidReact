@@ -3,10 +3,6 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.kauailabs.navx.frc.AHRS; // What Gyro do we have???
-
 public class MecanumDrive {
     private static final double kSpeedMultiplier = 0.1;
 
@@ -15,10 +11,8 @@ public class MecanumDrive {
     private static final int kFrontRightChannel = 3;
     private static final int kRearRightChannel = 2;
     private boolean inverted;
-    private static final boolean isGyroReversed = true;
 
     private CANSparkMax[] motors;
-    private final AHRS gyro = new AHRS(SerialPort.Port.kUSB1); // Need to know what gyro we have
 
     public MecanumDrive() {
         this.motors = new CANSparkMax[4];
@@ -61,9 +55,6 @@ public class MecanumDrive {
         }
         
     }
-        
-        
-    
 
     private double magnitude(final double[] vector) {
         double[] squares = new double[vector.length];
@@ -93,9 +84,4 @@ public class MecanumDrive {
         }
         return normalized;
     }
-
-    //untested
-    public double getHeading() {
-        return Math.IEEEremainder(gyro.getAngle(), 360) * (isGyroReversed ? -1.0 : 1.0);
-      }
 }
