@@ -12,7 +12,7 @@ public class Vision {
 
     public Vision() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
-        double[] pidValues = SmartDashboard.getNumberArray("AutoAlign: PID Values", new double[] { 0.015, 0, 0 });
+        double[] pidValues = SmartDashboard.getNumberArray("AutoAlign: PID Values", new double[] { 0.00009, 0.00007, 0 });
         pidController = new PIDController(pidValues[0], pidValues[1], pidValues[2]);
         pidController.setTolerance(SmartDashboard.getNumber("AutoAlign: Tolerance", 0.01));
     }
@@ -35,16 +35,20 @@ public class Vision {
         SmartDashboard.putNumber("limelightX", getXAngleOffset());
         SmartDashboard.putNumber("limelightY", getYAngleOffset());
         SmartDashboard.putBoolean("limelightTargets", getHasTargets());
+        SmartDashboard.putNumber("DistanceToTarget", estimateDistance());
     }
 
     public double estimateDistance() {
-        final double targetHeight = 102.625;
-        final double cameraHeight = 1.8;
-        final double cameraAngleToGround = 40.91;
+        //final double targetHeight = 102.625;
+        final double targetHeight = 4;
+        final double cameraHeight = 2.626;
+        final double cameraAngleToGround = 0;
         final double degrees = cameraAngleToGround + getYAngleOffset();
         // d = (h2-h1) / tan(a1+a2) -
         // https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
-        return (targetHeight - cameraHeight) / Math.tan(degrees * Math.PI / 180.0);
+        double distance = (targetHeight - cameraHeight) / Math.tan(degrees * Math.PI / 180.0);
+        SmartDashboard.putNumber("DistanceToTarget", distance);
+        return distance;
     }
 
     // Determine the mounting angle of the camera given a vision target and its
@@ -71,6 +75,7 @@ public class Vision {
             return 0;
         }
         double adjustment = pidController.calculate(getXAngleOffset());
+        SmartDashboard.putNumber("turningAdjustement", adjustment);
         adjustment = Math.min(Constants.TURN_MAX_SPEED, Math.max(-Constants.TURN_MAX_SPEED, adjustment));
         SmartDashboard.putNumber("Turning Adjustment", adjustment);
         return adjustment;

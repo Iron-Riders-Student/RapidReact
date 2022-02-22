@@ -4,22 +4,18 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class MecanumDrive {
-    private static final double kSpeedMultiplier = 0.1;
 
-    private static final int kFrontLeftChannel = 1;
-    private static final int kRearLeftChannel = 4;
-    private static final int kFrontRightChannel = 3;
-    private static final int kRearRightChannel = 2;
+
     private boolean inverted;
 
     private CANSparkMax[] motors;
 
     public MecanumDrive() {
         this.motors = new CANSparkMax[4];
-        this.motors[0] = new CANSparkMax(MecanumDrive.kFrontLeftChannel, MotorType.kBrushless);
-        this.motors[1] = new CANSparkMax(MecanumDrive.kFrontRightChannel, MotorType.kBrushless);
-        this.motors[2] = new CANSparkMax(MecanumDrive.kRearLeftChannel, MotorType.kBrushless);
-        this.motors[3] = new CANSparkMax(MecanumDrive.kRearRightChannel, MotorType.kBrushless);
+        this.motors[0] = new CANSparkMax(Constants.kFrontLeftChannel, MotorType.kBrushless);
+        this.motors[1] = new CANSparkMax(Constants.kFrontRightChannel, MotorType.kBrushless);
+        this.motors[2] = new CANSparkMax(Constants.kRearLeftChannel, MotorType.kBrushless);
+        this.motors[3] = new CANSparkMax(Constants.kRearRightChannel, MotorType.kBrushless);
 
         this.motors[0].setInverted(true);
         this.motors[1].setInverted(false);
@@ -51,7 +47,7 @@ public class MecanumDrive {
         }
         
         for (int i = 0; i < 4; ++i) {
-            this.motors[i].set(speeds[i] * MecanumDrive.kSpeedMultiplier);
+            this.motors[i].set(speeds[i] * Constants.kSpeedMultiplier);
         }
         
     }
