@@ -55,9 +55,6 @@ public class MecanumDrive {
         }
         
     }
-        
-        
-    
 
     private double magnitude(final double[] vector) {
         double[] squares = new double[vector.length];
