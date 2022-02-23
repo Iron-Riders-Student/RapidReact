@@ -65,7 +65,7 @@ public class Vision {
     // Adjusts the distance between a vision target and the robot. Uses basic PID
     // with the ty value from the network table. (Sort of Tested)
     public double distanceAssist() {
-        double adjustment = !getHasTargets() ? 0.0 : (Constants.TARGET_DIST - estimateDistance()) * Constants.KP_DIST;
+        double adjustment = !getHasTargets() ? 0.0 : ( estimateDistance() - Constants.TARGET_DIST) * Constants.KP_DIST;
         adjustment = Math.min(Constants.DIST_MAX_SPEED, Math.max(-Constants.DIST_MAX_SPEED, adjustment));
         SmartDashboard.putNumber("Distance Adjustment", adjustment);
         return adjustment;
