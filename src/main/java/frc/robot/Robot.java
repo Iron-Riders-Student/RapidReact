@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
     public GenericHID controller;
@@ -20,12 +19,36 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        SmartDashboard.putNumber("speed", shooter.bottomMotor.getEncoder().getVelocity());
-    
-      mecanumDrive.updateSpeed(0, vision.distanceAssist(), 0);
-       SmartDashboard.updateValues();
-      // if (controller.getRawButtonPressed(1)) {
-           // mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1), controller.getRawAxis(2));
-        //}
-     }
-  }
+
+        // Interested in checking what the mounting angle is. Kind of tells us how
+        // accurate our distance is.
+        // vision.determineMountingAngle(vision.estimateDistance(), cameraHeight,
+        // objectHeight);
+        mecanumDrive.updateSpeed(0, vision.distanceAssist(), 0);
+
+        // Once both distance Assist and autoTarget is fixed, check code
+        // Combines both of these functions.
+        /*
+         * double adjustment = vision.distanceAssist();
+         * mecanumDrive.updateSpeed(0, adjustment, 0);
+         * SmartDashboard.updateValues();
+         * double minError = 0.05; // Used only for Alignment and also is a educated
+         * guess.
+         * 
+         * if (vision.isAligned()) {
+         * SmartDashboard.putBoolean("Finished Aligning", true);
+         * }
+         * else {
+         * final double[] params = vision.autoTarget();
+         * final double maxInput = Math.max(Math.abs(params[0]), Math.abs(params[1]));
+         * if (maxInput < minError) {
+         * SmartDashboard.putBoolean("Finishing Aligning", true);
+         * }
+         * }
+         */
+
+        // Drive Train Code:
+        // mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1),
+        // controller.getRawAxis(2));
+    }
+}
