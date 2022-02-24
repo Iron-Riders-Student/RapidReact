@@ -7,6 +7,8 @@ public class Constants {
     public static final int SHOOTER_PORT_1 = 5;
     public static final int SHOOTER_PORT_2 = 6;
 
+    public static final boolean DRIVER_CONTROL = true;
+
     // Automatic distancing
     public static final double TARGET_DIST = 50; // Orginally 100
     public static final double KP_DIST = 0.225;

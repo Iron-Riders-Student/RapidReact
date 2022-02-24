@@ -4,9 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class MecanumDrive {
-
     private boolean inverted;
-
     private CANSparkMax[] motors;
 
     public MecanumDrive() {
@@ -40,15 +38,12 @@ public class MecanumDrive {
             speeds[2] = 0 + strafe + drive + turn;
             speeds[3] = 0 - strafe + drive - turn;
         }
-
         if (magnitude(speeds) > 1) {
             speeds = normalize(speeds);
         }
-
         for (int i = 0; i < 4; ++i) {
             this.motors[i].set(speeds[i] * Constants.kSpeedMultiplier);
         }
-
     }
 
     private double magnitude(final double[] vector) {
