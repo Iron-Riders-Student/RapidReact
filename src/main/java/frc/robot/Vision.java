@@ -22,8 +22,8 @@ public class Vision {
         //SmartDashboard.putNumber("Target_Dist", Constants.TARGET_DIST);
         //SmartDashboard.putNumber("DIST_MAX_SPEED", Constants.DIST_MAX_SPEED);
         //SmartDashboard.putNumber("okDistance", Constants.okDistance);
-        SmartDashboard.putNumber("Turn_MIN_ANGLE", 1);
-        SmartDashboard.putNumber("Turn_MAX_Speed", 1);
+       // SmartDashboard.putNumber("Turn_MIN_ANGLE", 1);
+        //SmartDashboard.putNumber("Turn_MAX_Speed", 1);
     }
 
     public double getXAngleOffset() {
