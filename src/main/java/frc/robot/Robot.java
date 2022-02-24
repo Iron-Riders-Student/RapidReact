@@ -21,7 +21,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         if (Constants.DRIVER_CONTROL) {
-            mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1), controller.getRawAxis(2));
+            mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * controller.getRawAxis(3),
+                    controller.getRawAxis(2));
         } else {
             mecanumDrive.updateSpeed(0, vision.distanceAssist(), vision.steeringAssist());
             vision.updateDashboard();
