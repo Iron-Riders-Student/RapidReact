@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
         // accurate our distance is.
         // vision.determineMountingAngle(vision.estimateDistance(), cameraHeight,
         // objectHeight);
-        mecanumDrive.updateSpeed(0, vision.distanceAssist(), 0);
+        mecanumDrive.updateSpeed(0, vision.distanceAssist(), vision.steeringAssist());
 
         // Once both distance Assist and autoTarget is fixed, check code
         // Combines both of these functions.
