@@ -11,6 +11,7 @@ public class Constants {
     public static final double TARGET_DIST = 5; // Orginally 100
     public static final double KP_DIST = 0.001;
     public static final double DIST_MAX_SPEED = 0.5;
+    public static final double okDistance = 3;
 
     // Automatic turning
     public static final double TURN_MIN_ANGLE = 1.0;
