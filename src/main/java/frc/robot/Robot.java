@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        TeleopCamera();
  if (Constants.DRIVER_CONTROL) {
              if (controller.getRawButtonPressed(1)) {
                 mecanumDrive.invertDrive();
