@@ -24,8 +24,8 @@ public class Robot extends TimedRobot {
              if (controller.getRawButtonPressed(1)) {
                 mecanumDrive.invertDrive();
             }
-            mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * controller.getRawAxis(3),
-                    controller.getRawAxis(2));
+            double slider = controller.getRawAxis(3) * 0.5 + 0.5;
+            mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider, controller.getRawAxis(2));
         } else {
             mecanumDrive.updateSpeed(0, vision.distanceAssist(), vision.steeringAssist());
             vision.updateDashboard();
