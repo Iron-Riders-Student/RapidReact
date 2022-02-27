@@ -23,5 +23,10 @@ public class Robot extends TimedRobot {
         }
         mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1), controller.getRawAxis(2));
         intake.updateDashboard();
+        if (controller.getRawButtonPressed(3)) {
+            intake.intakeBall();
+        } else if (controller.getRawButtonPressed(2)) {
+            intake.spitOutBall();
+        }
     }
 }
