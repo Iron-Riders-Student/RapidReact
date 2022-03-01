@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
-import frc.robot.GripPipeline;
+import frc.robot.GripPipelineBall;
 
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -24,7 +24,8 @@ public class Robot extends TimedRobot {
     public Shooter shooter;
     public UsbCamera camera = CameraServer.startAutomaticCapture();
     private final Object imgLock = new Object();
-    public VisionThread visionThread;
+    public VisionThread visionThread;   
+    private double centerX = 0.0;
 
     @Override
     public void robotInit() {
@@ -33,9 +34,9 @@ public class Robot extends TimedRobot {
         controller = new GenericHID(0);
         vision = new Vision();
         mecanumDrive = new MecanumDrive();
-        visionThread = new VisionThread(camera, new MyVisionPipeline(), pipeline -> {
-            if (!pipeline.filterContoursOutput().isEmpty()) {
-                Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+        visionThread = new VisionThread(camera, new GripPipelineBall(), pipeline -> {
+            if (!pipeline.findBlobsOutput().empty()) {
+                Rect r = Imgproc.boundingRect(pipeline.findBlobsOutput());
                 synchronized (imgLock) {
                     centerX = r.x + (r.width / 2);
                 }
