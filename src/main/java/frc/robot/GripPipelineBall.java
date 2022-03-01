@@ -13,7 +13,7 @@ import edu.wpi.first.vision.VisionPipeline;
 
 import org.opencv.core.*;
 import org.opencv.core.Core.*;
-import org.opencv.features2d.FeatureDetector;
+import org.opencv.features2d.FastFeatureDetector;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.*;
@@ -246,7 +246,7 @@ public class GripPipelineBall implements VisionPipeline {
 	 */
 	private void findBlobs(Mat input, double minArea, double[] circularity,
 		Boolean darkBlobs, MatOfKeyPoint blobList) {
-		FeatureDetector blobDet = FeatureDetector.create(FeatureDetector.SIMPLEBLOB);
+		FastFeatureDetector blobDet = FastFeatureDetector.create(9);  //looked up documentation for the old version and it should be 9.
 		try {
 			File tempFile = File.createTempFile("config", ".xml");
 

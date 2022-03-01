@@ -4,6 +4,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import javax.lang.model.element.ModuleElement.OpensDirective;
+
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import frc.robot.GripPipelineBall;
@@ -11,7 +14,6 @@ import frc.robot.GripPipelineBall;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.vision.VisionRunner;
 import edu.wpi.first.vision.VisionThread;
 
@@ -43,10 +45,17 @@ public class Robot extends TimedRobot {
             }
         });
         visionThread.start();
+        
     }
 
     @Override
     public void teleopPeriodic() {
+        double centerX;
+        synchronized (imgLock) {
+            centerX = this.centerX;
+        }
+        double turn = centerX - (1920 / 2);
+        System.out.println(turn);
         if (Constants.DRIVER_CONTROL) {
              if (controller.getRawButtonPressed(1)) {
                 mecanumDrive.invertDrive();
