@@ -1,39 +1,39 @@
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake {
-    private CANSparkMax intakeMotor;
-    private CANSparkMax deploymentMotor;
-    private RelativeEncoder deploymentEncoder;
+    private TalonSRX intakeMotor;
+    private TalonSRX deploymentMotor;
+    private CANCoder deploymentEncoder;
 
     private final double startPosition = 0.0;
     private final double endPosition = 1.0;
     private final double deploymentSpeed = 0.5;
 
     public Intake(int intakeMotorPort, int deploymentMotorPort) {
-        intakeMotor = new CANSparkMax(intakeMotorPort, MotorType.kBrushless);
-        deploymentMotor = new CANSparkMax(deploymentMotorPort, MotorType.kBrushless);
-        deploymentEncoder = deploymentMotor.getEncoder();
+        intakeMotor = new TalonSRX(intakeMotorPort);
+        deploymentMotor = new TalonSRX(deploymentMotorPort);
+        deploymentEncoder = new CANCoder(deploymentMotorPort);
     }
 
     public void deploy() {
         if (deploymentEncoder.getPosition() < endPosition) {
-            deploymentMotor.set(deploymentSpeed);
+            deploymentMotor.set(TalonSRXControlMode.Velocity, deploymentSpeed);
         } else {
-            deploymentMotor.set(0.0);
+            deploymentMotor.set(TalonSRXControlMode.Velocity, 0.0);
         }
     }
 
     public void retract() {
         if (deploymentEncoder.getPosition() > startPosition) {
-            deploymentMotor.set(-deploymentSpeed);
+            deploymentMotor.set(TalonSRXControlMode.Velocity, -deploymentSpeed);
         } else {
-            deploymentMotor.set(0.0);
+            deploymentMotor.set(TalonSRXControlMode.Velocity, 0.0);
         }
     }
 
@@ -42,14 +42,14 @@ public class Intake {
     }
 
     public void intakeBall() {
-        intakeMotor.set(1);  // TODO: Find good speed
+        intakeMotor.set(TalonSRXControlMode.Velocity, 1);  // TODO: Find good speed
     }
 
     public void spitOutBall() {
-        intakeMotor.set(-1);  // TODO: Find good speed
+        intakeMotor.set(TalonSRXControlMode.Velocity, -1);  // TODO: Find good speed
     }
 
     public void stop() {  // Is this really needed?
-        intakeMotor.set(0);
+        intakeMotor.set(TalonSRXControlMode.Velocity, 0);
     }
 }
