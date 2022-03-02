@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
@@ -18,6 +19,24 @@ public class Robot extends TimedRobot {
         vision = new Vision();
         mecanumDrive = new MecanumDrive();
         intake = new Intake(1, 2); // TODO: Change port to ports file, add button on controller
+   }
+
+    @Override
+    public void autonomousPeriodic() {
+        if (Timer.getMatchTime() > (15.0 - 5.0)) {
+            // intake.intakeBall();?
+            mecanumDrive.updateSpeed(0.0, Constants.kAutoSpeed, 0.0);
+        } else {
+            // intake.stop();?
+            mecanumDrive.updateSpeed(0.0, 0.0, 0.0);
+        }
+        if (Timer.getMatchTime() < (15.0 - 5.0) && Timer.getMatchTime() > (15.0 - 10.0)) {
+            // todo: indexer.extend();
+            // todo: shooter.shoot();
+        } else {
+            // todo: indexer.retract();
+            // todo: shooter.stop();
+        }
     }
 
     @Override

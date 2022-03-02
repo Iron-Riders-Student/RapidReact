@@ -1,8 +1,8 @@
 package frc.robot;
 
 public class Constants {
-
     public static final double kSpeedMultiplier = 0.1;
+    public static final double kAutoSpeed = 0.5;
 
     public static final int SHOOTER_PORT_1 = 5;
     public static final int SHOOTER_PORT_2 = 6;
