@@ -5,6 +5,11 @@ public class Constants {
     public static final double DRIVE_SPEED_MULT = 0.65;
     public static final double DRIVE_SPEED_AUTO = 0.1 / DRIVE_SPEED_MULT;
 
+    // Intake
+    public static final double INTAKE_SPEED = 0.1;
+    public static final double DEPLOY_ENCODER_COUNT = 4096;
+    public static final double DEPLOY_SPEED = 0.1;
+
     // Shooter
     public static final double SHOOTER_P = 0.00017;
     public static final double SHOOTER_I = 0.0000007;
@@ -39,4 +44,5 @@ public class Constants {
     public static final double INDEXER_EXTEND_ANGLE = 45;
     public static final double VISION_CAMERA_ANGLE = -2;
     public static final double VISION_DELTA_HEIGHT = 104 - 20; // target - camera
+    public static final double DEPLOY_FORWARD_LIMIT = 0.0;
 }

@@ -1,46 +1,51 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.CANCoder;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 public class Intake {
     private TalonSRX intakeMotor;
     private TalonSRX deploymentMotor;
-    private CANCoder deploymentEncoder;
-
-    private final double endPosition = 1.0;
-    private final double deploymentSpeed = 0.5;
 
     public Intake() {
+        TalonSRXConfiguration intakeConfig = new TalonSRXConfiguration();
         intakeMotor = new TalonSRX(Constants.INTAKE_BELT_PORT);
+        intakeMotor.configAllSettings(intakeConfig);
+        intakeMotor.setNeutralMode(NeutralMode.Coast);
+        TalonSRXConfiguration deploymentConfig = new TalonSRXConfiguration();
+        deploymentConfig.forwardSoftLimitEnable = true;
+        deploymentConfig.forwardSoftLimitThreshold = Constants.DEPLOY_FORWARD_LIMIT;
+        deploymentConfig.reverseSoftLimitEnable = true;
+        deploymentConfig.reverseSoftLimitThreshold = 0;
         deploymentMotor = new TalonSRX(Constants.INTAKE_DEPLOYMENT_PORT);
-        deploymentEncoder = new CANCoder(Constants.INTAKE_DEPLOYMENT_PORT);
+        deploymentMotor.configAllSettings(deploymentConfig);
+        deploymentMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        deploymentMotor.setSensorPhase(false);
+        deploymentMotor.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void deploy() {
-        if (deploymentEncoder.getPosition() < endPosition) {
-            deploymentMotor.set(TalonSRXControlMode.Velocity, deploymentSpeed);
-        } else {
-            deploymentMotor.set(TalonSRXControlMode.Velocity, 0.0);
-        }
+    public void startDeployment() {
+        deploymentMotor.set(ControlMode.PercentOutput, Constants.DEPLOY_SPEED);
     }
 
-    public void updateDashboard() {
-        SmartDashboard.putNumber("latch encoder position", deploymentEncoder.getPosition());
+    public void finishDeployment() {
+        deploymentMotor.set(ControlMode.PercentOutput, 0.0);
+        deploymentMotor.setNeutralMode(NeutralMode.Coast);
     }
 
     public void intakeBall() {
-        intakeMotor.set(TalonSRXControlMode.Velocity, 1);  // TODO: Find good speed
+        intakeMotor.set(TalonSRXControlMode.PercentOutput, Constants.INTAKE_SPEED);
     }
 
     public void spitOutBall() {
-        intakeMotor.set(TalonSRXControlMode.Velocity, -1);  // TODO: Find good speed
+        intakeMotor.set(TalonSRXControlMode.PercentOutput, -Constants.INTAKE_SPEED);
     }
 
-    public void stop() {  // Is this really needed?
-        intakeMotor.set(TalonSRXControlMode.Velocity, 0);
+    public void stop() {
+        intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 }

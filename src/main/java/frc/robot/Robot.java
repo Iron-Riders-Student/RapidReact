@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         if (Timer.getMatchTime() > (15.0 - 3.0)) {
+            intake.startDeployment();
             mecanumDrive.updateSpeed(0.0, Constants.DRIVE_SPEED_AUTO, 0.0);
         } else  if (Timer.getMatchTime() > (15.0 - 5.0)) {
             mecanumDrive.updateSpeed(0.0, 0.0, vision.steeringAssist());
@@ -43,7 +44,7 @@ public class Robot extends TimedRobot {
         } else {
             indexer.retract();
             shooter.stop();
-            intake.deploy();
+            intake.finishDeployment();
         }
     }       
 
@@ -80,7 +81,6 @@ public class Robot extends TimedRobot {
         mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider, controller.getRawAxis(2));
       
         vision.updateDashboard();
-        intake.updateDashboard();
         SmartDashboard.updateValues(); // does this do anything?
     }
 }
