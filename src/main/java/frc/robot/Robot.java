@@ -9,6 +9,7 @@ public class Robot extends TimedRobot {
     public MecanumDrive mecanumDrive;
     public Vision vision;
     public Shooter shooter;
+    private Intake intake;
 
     @Override
     public void robotInit() {
@@ -16,6 +17,7 @@ public class Robot extends TimedRobot {
         controller = new GenericHID(0);
         vision = new Vision();
         mecanumDrive = new MecanumDrive();
+        intake = new Intake(1, 2); // TODO: Change port to ports file, add button on controller
     }
 
     @Override
@@ -23,13 +25,20 @@ public class Robot extends TimedRobot {
         if (Constants.DRIVER_CONTROL) {
              if (controller.getRawButtonPressed(1)) {
                 mecanumDrive.invertDrive();
+            } else if (controller.getRawButtonPressed(3)) {
+                intake.intakeBall();
+            } else if (controller.getRawButtonPressed(2)) {
+                intake.spitOutBall();
             }
             double slider = controller.getRawAxis(3) * 0.5 + 0.5;
             mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider, controller.getRawAxis(2));
         } else {
             mecanumDrive.updateSpeed(0, vision.distanceAssist(), vision.steeringAssist());
-            vision.updateDashboard();
+            
         }
-        SmartDashboard.updateValues();
+      
+        vision.updateDashboard();
+        intake.updateDashboard();
+        SmartDashboard.updateValues(); // does this do anything
     }
 }
