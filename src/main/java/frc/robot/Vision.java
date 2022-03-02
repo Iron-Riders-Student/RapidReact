@@ -9,14 +9,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Vision {
     private NetworkTable table;
     private PIDController pidController;
-    double[] pidValues;
 
     public Vision() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
-        pidValues = SmartDashboard.getNumberArray("AutoAlign: PID Values", new double[] { 0.1, 0, 0 });
-        pidController = new PIDController(pidValues[0], pidValues[1], pidValues[2]);
+        pidController = new PIDController(Constants.TURN_P, 0.0, 0.0);
         pidController.setSetpoint(0);
-        pidController.setTolerance(SmartDashboard.getNumber("AutoAlign: Tolerance", 0.01));
+        pidController.setTolerance(Constants.TURN_TOLERANCE);
         updateDashboard();
     }
 
@@ -42,14 +40,9 @@ public class Vision {
     }
 
     public double estimateDistance() {
-        final double targetHeight = 29;
-        final double cameraHeight = 3.125;
-        final double cameraAngleToGround = -2;
-        final double degrees = cameraAngleToGround + getYAngleOffset();
-        SmartDashboard.putNumber("tyAngle", getYAngleOffset());
+        final double degrees = Constants.VISION_CAMERA_ANGLE + getYAngleOffset();
         // https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
-        double distance = (targetHeight - cameraHeight) / Math.tan(degrees * Math.PI / 180.0);
-        return distance;
+        return Constants.VISION_DELTA_HEIGHT / Math.tan(degrees * Math.PI / 180.0);
     }
 
     // Adjusts the distance between a vision target and the robot using ty and PID
@@ -58,7 +51,7 @@ public class Vision {
         double adjustment = Distance_Error * Constants.KP_DIST;
         adjustment = Math.min(Constants.DIST_MAX_SPEED, Math.max(-Constants.DIST_MAX_SPEED, adjustment));
         SmartDashboard.putNumber("Distance Adjustment", adjustment);
-        return (Math.abs(Distance_Error) < Constants.okDistance) ? 0 : adjustment;
+        return (Math.abs(Distance_Error) < Constants.OK_DISTANCE) ? 0 : adjustment;
     }
 
     // Adjusts the angle facing a vision target using Limelight tx and PID
@@ -66,15 +59,9 @@ public class Vision {
         if (!getHasTargets() || Math.abs(getXAngleOffset()) < Constants.TURN_MIN_ANGLE) {
             return 0;
         }
-        pidValues[0] = SmartDashboard.getNumber("P", pidValues[0]);
-        pidController.setP(pidValues[0]);
         double adjustment = pidController.calculate(getXAngleOffset());
         adjustment = Math.min(Constants.TURN_MAX_SPEED, Math.max(-Constants.TURN_MAX_SPEED, adjustment));
         SmartDashboard.putNumber("Turning Adjustment", adjustment);
-        return isAligned() ? 0 : -adjustment;
-    }
-
-    public boolean isAligned() {
-        return pidController.atSetpoint();
+        return pidController.atSetpoint() ? 0 : -adjustment;
     }
 }

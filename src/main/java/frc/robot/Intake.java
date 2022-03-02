@@ -11,27 +11,18 @@ public class Intake {
     private TalonSRX deploymentMotor;
     private CANCoder deploymentEncoder;
 
-    private final double startPosition = 0.0;
     private final double endPosition = 1.0;
     private final double deploymentSpeed = 0.5;
 
-    public Intake(int intakeMotorPort, int deploymentMotorPort) {
-        intakeMotor = new TalonSRX(intakeMotorPort);
-        deploymentMotor = new TalonSRX(deploymentMotorPort);
-        deploymentEncoder = new CANCoder(deploymentMotorPort);
+    public Intake() {
+        intakeMotor = new TalonSRX(Constants.INTAKE_BELT_PORT);
+        deploymentMotor = new TalonSRX(Constants.INTAKE_DEPLOYMENT_PORT);
+        deploymentEncoder = new CANCoder(Constants.INTAKE_DEPLOYMENT_PORT);
     }
 
     public void deploy() {
         if (deploymentEncoder.getPosition() < endPosition) {
             deploymentMotor.set(TalonSRXControlMode.Velocity, deploymentSpeed);
-        } else {
-            deploymentMotor.set(TalonSRXControlMode.Velocity, 0.0);
-        }
-    }
-
-    public void retract() {
-        if (deploymentEncoder.getPosition() > startPosition) {
-            deploymentMotor.set(TalonSRXControlMode.Velocity, -deploymentSpeed);
         } else {
             deploymentMotor.set(TalonSRXControlMode.Velocity, 0.0);
         }

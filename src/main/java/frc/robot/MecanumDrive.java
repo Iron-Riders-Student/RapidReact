@@ -9,10 +9,10 @@ public class MecanumDrive {
 
     public MecanumDrive() {
         this.motors = new CANSparkMax[4];
-        this.motors[0] = new CANSparkMax(Constants.kFrontLeftChannel, MotorType.kBrushless);
-        this.motors[1] = new CANSparkMax(Constants.kFrontRightChannel, MotorType.kBrushless);
-        this.motors[2] = new CANSparkMax(Constants.kRearLeftChannel, MotorType.kBrushless);
-        this.motors[3] = new CANSparkMax(Constants.kRearRightChannel, MotorType.kBrushless);
+        this.motors[0] = new CANSparkMax(Constants.WHEEL_PORT_FRONT_LEFT, MotorType.kBrushless);
+        this.motors[1] = new CANSparkMax(Constants.WHEEL_PORT_FRONT_RIGHT, MotorType.kBrushless);
+        this.motors[2] = new CANSparkMax(Constants.WHEEL_PORT_REAR_LEFT, MotorType.kBrushless);
+        this.motors[3] = new CANSparkMax(Constants.WHEEL_PORT_REAR_RIGHT, MotorType.kBrushless);
 
         this.motors[0].setInverted(true);
         this.motors[1].setInverted(false);
@@ -42,7 +42,7 @@ public class MecanumDrive {
             speeds = normalize(speeds);
         }
         for (int i = 0; i < 4; ++i) {
-            this.motors[i].set(speeds[i] * Constants.kSpeedMultiplier);
+            this.motors[i].set(speeds[i] * Constants.DRIVE_SPEED_MULT);
         }
     }
 
