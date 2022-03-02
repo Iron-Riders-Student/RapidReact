@@ -20,7 +20,7 @@ public class Intake {
         deploymentConfig.forwardSoftLimitEnable = true;
         deploymentConfig.forwardSoftLimitThreshold = Constants.DEPLOY_FORWARD_LIMIT;
         deploymentConfig.reverseSoftLimitEnable = true;
-        deploymentConfig.reverseSoftLimitThreshold = 0;
+        deploymentConfig.reverseSoftLimitThreshold = Constants.DEPLOY_REVERSE_LIMIT;
         deploymentMotor = new TalonSRX(Constants.INTAKE_DEPLOYMENT_PORT);
         deploymentMotor.configAllSettings(deploymentConfig);
         deploymentMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);

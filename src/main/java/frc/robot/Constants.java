@@ -45,4 +45,5 @@ public class Constants {
     public static final double TARGET_DIST = 50;
     public static final double VISION_DELTA_HEIGHT = 104 - 20; // target - camera
     public static final double DEPLOY_FORWARD_LIMIT = 0.0;
+    public static final double DEPLOY_REVERSE_LIMIT = 0.0;
 }
