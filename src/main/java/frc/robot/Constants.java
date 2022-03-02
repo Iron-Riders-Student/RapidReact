@@ -17,7 +17,6 @@ public class Constants {
     public static final double SHOOTER_TOP_MOTOR_CHANGE = 1.0;
 
     // Automatic distancing
-    public static final double TARGET_DIST = 50;
     public static final double KP_DIST = 0.225;
     public static final double DIST_MAX_SPEED = 1;
     public static final double OK_DISTANCE = 3;
@@ -43,6 +42,7 @@ public class Constants {
     public static final int CAMERA_USB_PORT = 0;
     public static final double INDEXER_EXTEND_ANGLE = 45;
     public static final double VISION_CAMERA_ANGLE = -2;
+    public static final double TARGET_DIST = 50;
     public static final double VISION_DELTA_HEIGHT = 104 - 20; // target - camera
     public static final double DEPLOY_FORWARD_LIMIT = 0.0;
 }
