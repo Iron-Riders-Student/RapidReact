@@ -46,5 +46,7 @@ public class Constants {
     public static final double VISION_DELTA_HEIGHT = 104 - 20; // target - camera
     public static final double DEPLOY_FORWARD_LIMIT = 0.0;
     public static final double DEPLOY_REVERSE_LIMIT = 0.0;
-    public static final int DEPLOY_CURRENT_LIMIT = 1;
+    public static final int DEPLOY_CURRENT_PEAK_LIMIT = 1;
+    public static final int DEPLOY_CURRENT_PEAK_TIME = 10;
+    public static final int DEPLOY_CURRENT_CONT_LIMIT = 1;
 }
