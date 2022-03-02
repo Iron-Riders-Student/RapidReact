@@ -1,32 +1,44 @@
-// Code from Github (MecanumBot/src/main/java/frc/robot/Robot.java) (1/12/2022):
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
-    private GenericHID controller;
-    private MecanumDrive mecanumDrive;
+    public GenericHID controller;
+    public MecanumDrive mecanumDrive;
+    public Vision vision;
+    public Shooter shooter;
     private Intake intake;
 
     @Override
     public void robotInit() {
+        shooter = new Shooter(Constants.SHOOTER_PORT_1, Constants.SHOOTER_PORT_2);
         controller = new GenericHID(0);
+        vision = new Vision();
         mecanumDrive = new MecanumDrive();
         intake = new Intake(1, 2); // TODO: Change port to ports file, add button on controller
     }
 
     @Override
     public void teleopPeriodic() {
-        if(controller.getRawButtonPressed(1)){
-            mecanumDrive.invertDrive();
+        if (Constants.DRIVER_CONTROL) {
+             if (controller.getRawButtonPressed(1)) {
+                mecanumDrive.invertDrive();
+            } else if (controller.getRawButtonPressed(3)) {
+                intake.intakeBall();
+            } else if (controller.getRawButtonPressed(2)) {
+                intake.spitOutBall();
+            }
+            double slider = controller.getRawAxis(3) * 0.5 + 0.5;
+            mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider, controller.getRawAxis(2));
+        } else {
+            mecanumDrive.updateSpeed(0, vision.distanceAssist(), vision.steeringAssist());
+            
         }
-        mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1), controller.getRawAxis(2));
+      
+        vision.updateDashboard();
         intake.updateDashboard();
-        if (controller.getRawButtonPressed(3)) {
-            intake.intakeBall();
-        } else if (controller.getRawButtonPressed(2)) {
-            intake.spitOutBall();
-        }
+        SmartDashboard.updateValues(); // does this do anything
     }
 }
