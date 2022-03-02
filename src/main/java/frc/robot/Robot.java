@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -11,6 +13,7 @@ public class Robot extends TimedRobot {
     public Vision vision;
     public Shooter shooter;
     private Intake intake;
+    public UsbCamera frontCamera;
 
     @Override
     public void robotInit() {
@@ -19,6 +22,13 @@ public class Robot extends TimedRobot {
         vision = new Vision();
         mecanumDrive = new MecanumDrive();
         intake = new Intake(1, 2); // TODO: Change port to ports file, add button on controller
+      
+        // start capture from the camera at the front plugged into USB slot 0
+        frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
+        // set the stream's resolution to 320x240
+        frontCamera.setResolution(320, 240);
+        // set the stream's frames per second to 15
+        frontCamera.setFPS(15);
    }
 
     @Override
@@ -53,11 +63,10 @@ public class Robot extends TimedRobot {
             mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider, controller.getRawAxis(2));
         } else {
             mecanumDrive.updateSpeed(0, vision.distanceAssist(), vision.steeringAssist());
-            
         }
       
         vision.updateDashboard();
         intake.updateDashboard();
-        SmartDashboard.updateValues(); // does this do anything
+        SmartDashboard.updateValues(); // does this do anything?
     }
 }
