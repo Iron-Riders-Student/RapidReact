@@ -23,12 +23,12 @@ public class Constants {
 
     // Automatic distancing
     public static final double KP_DIST = 0.225;
-    public static final double DIST_MAX_SPEED = 1;
+    public static final double DIST_MAX_SPEED = 0.5;
     public static final double OK_DISTANCE = 3;
 
     // Automatic turning
     public static final double TURN_MIN_ANGLE = 1.0;
-    public static final double TURN_MAX_SPEED = 1;
+    public static final double TURN_MAX_SPEED = 0.15;
     public static final double TURN_P = 0.1;
     public static final double TURN_TOLERANCE = 0.01;
 
@@ -47,6 +47,6 @@ public class Constants {
     // todo: constants below this line
     public static final double INDEXER_EXTEND_ANGLE = 45;
     public static final double VISION_CAMERA_ANGLE = -2;
-    public static final double TARGET_DIST = 50;
-    public static final double VISION_DELTA_HEIGHT = 104 - 20; // target - camera
+    public static final double TARGET_DIST = 200;
+    public static final double VISION_DELTA_HEIGHT = 106 - 8; // target - camera
 }
