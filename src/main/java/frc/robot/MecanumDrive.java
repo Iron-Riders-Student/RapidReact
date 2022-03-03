@@ -46,6 +46,16 @@ public class MecanumDrive {
         }
     }
 
+    public void updateAutoSpeed(double strafe, double drive, double turn) {
+            double[] speeds = new double[4];
+            speeds[0] = 0 - strafe + drive + turn;
+            speeds[1] = 0 + strafe + drive - turn;
+            speeds[2] = 0 + strafe + drive + turn;
+            speeds[3] = 0 - strafe + drive - turn;
+        if (magnitude(speeds) > 1) speeds = normalize(speeds);
+        for (int i = 0; i < 4; ++i) this.motors[i].set(speeds[i] * Constants.DRIVE_SPEED_MULT);
+    }
+
     private double magnitude(final double[] vector) {
         double[] squares = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {

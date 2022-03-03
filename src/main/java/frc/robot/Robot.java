@@ -26,9 +26,9 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
         if (Timer.getMatchTime() > (15.0 - 3.0)) {
             intake.startDeployment();
-            mecanumDrive.updateSpeed(0.0, Constants.DRIVE_SPEED_AUTO, 0.0);
+            mecanumDrive.updateAutoSpeed(0.0, Constants.DRIVE_SPEED_AUTO, 0.0);
         } else if (Timer.getMatchTime() > (15.0 - 5.0)) {
-            mecanumDrive.updateSpeed(0.0, 0.0, vision.steeringAssist());
+            mecanumDrive.updateAutoSpeed(0.0, 0.0, vision.steeringAssist());
             shooter.shoot(Shooter.distanceToRPM(vision.estimateDistance()));
         } else if (Timer.getMatchTime() > (15.0 - 8.0)) {
             indexer.extend();
@@ -64,11 +64,11 @@ public class Robot extends TimedRobot {
         }
 
         if (controller.getRawButton(9) && controller.getRawButton(10)) {
-            mecanumDrive.updateSpeed(0.0, vision.distanceAssist(), vision.steeringAssist());
+            mecanumDrive.updateAutoSpeed(0.0, vision.distanceAssist(), vision.steeringAssist());
         } else if (controller.getRawButton(9)) {
-            mecanumDrive.updateSpeed(0.0, 0.0, vision.steeringAssist());
+            mecanumDrive.updateAutoSpeed(0.0, 0.0, vision.steeringAssist());
         } else if (controller.getRawButton(10)) {
-            mecanumDrive.updateSpeed(0.0, vision.distanceAssist(), 0.0);
+            mecanumDrive.updateAutoSpeed(0.0, vision.distanceAssist(), 0.0);
         } else {
             double slider = controller.getRawAxis(3) * 0.5 + 0.5;
             mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider,
