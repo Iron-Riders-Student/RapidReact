@@ -9,6 +9,11 @@ public class Constants {
     public static final double INTAKE_SPEED = 0.1;
     public static final double DEPLOY_ENCODER_COUNT = 4096;
     public static final double DEPLOY_SPEED = 0.1;
+    public static final int DEPLOY_CURRENT_PEAK_LIMIT = 0;
+    public static final int DEPLOY_CURRENT_PEAK_TIME = 10;
+    public static final int DEPLOY_CURRENT_CONT_LIMIT = 1;
+    public static final double DEPLOY_FORWARD_LIMIT = DEPLOY_ENCODER_COUNT / 4;
+    public static final double DEPLOY_REVERSE_LIMIT = 0.0;
 
     // Shooter
     public static final double SHOOTER_P = 0.00017;
@@ -34,19 +39,14 @@ public class Constants {
     public static final int WHEEL_PORT_REAR_RIGHT = 2;
     public static final int SHOOTER_PORT_BOTTOM = 5;
     public static final int SHOOTER_PORT_TOP = 6;
+    public static final int INTAKE_BELT_PORT = 8;
+    public static final int INTAKE_DEPLOYMENT_PORT = 7;
+    public static final int CAMERA_USB_PORT = 0;
+    public static final int INDEXER_SERVO_PORT = 0;
 
     // todo: constants below this line
-    public static final int INTAKE_BELT_PORT = 0;
-    public static final int INTAKE_DEPLOYMENT_PORT = 7;
-    public static final int INDEXER_SERVO_PORT = 0;
-    public static final int CAMERA_USB_PORT = 0;
     public static final double INDEXER_EXTEND_ANGLE = 45;
     public static final double VISION_CAMERA_ANGLE = -2;
     public static final double TARGET_DIST = 50;
     public static final double VISION_DELTA_HEIGHT = 104 - 20; // target - camera
-    public static final double DEPLOY_FORWARD_LIMIT = 6.28;
-    public static final double DEPLOY_REVERSE_LIMIT = 0.0;
-    public static final int DEPLOY_CURRENT_PEAK_LIMIT = 1;
-    public static final int DEPLOY_CURRENT_PEAK_TIME = 10;
-    public static final int DEPLOY_CURRENT_CONT_LIMIT = 1;
 }
