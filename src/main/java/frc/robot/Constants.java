@@ -39,8 +39,8 @@ public class Constants {
     public static final int WHEEL_PORT_REAR_RIGHT = 2;
     public static final int SHOOTER_PORT_BOTTOM = 5;
     public static final int SHOOTER_PORT_TOP = 6;
-    public static final int INTAKE_BELT_PORT = 8;
-    public static final int INTAKE_DEPLOYMENT_PORT = 7;
+    public static final int INTAKE_BELT_PORT = 7;
+    public static final int INTAKE_DEPLOYMENT_PORT = 8;
     public static final int CAMERA_USB_PORT = 0;
     public static final int INDEXER_SERVO_PORT = 0;
 
