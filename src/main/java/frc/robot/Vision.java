@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // http://docs.limelightvision.io/en/latest/networktables_api.html
 public class Vision {
-    private NetworkTable table;
-    private PIDController pidController;
+    public NetworkTable table;
+    public PIDController pidController;
 
     public Vision() {
         table = NetworkTableInstance.getDefault().getTable("limelight");

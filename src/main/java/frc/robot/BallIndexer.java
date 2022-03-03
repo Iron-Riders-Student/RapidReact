@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Servo;
 
 public class BallIndexer {
-    private Servo servo;
+    public Servo servo;
 
     public BallIndexer() {
         servo = new Servo(Constants.INDEXER_SERVO_PORT);

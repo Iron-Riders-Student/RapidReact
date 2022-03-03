@@ -8,8 +8,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 public class Intake {
-    private TalonSRX intakeMotor;
-    private TalonSRX deploymentMotor;
+    public TalonSRX intakeMotor;
+    public TalonSRX deploymentMotor;
 
     public Intake() {
         TalonSRXConfiguration intakeConfig = new TalonSRXConfiguration();

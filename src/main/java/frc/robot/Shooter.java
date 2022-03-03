@@ -7,8 +7,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Shooter {
-    private CANSparkMax bottomMotor, topMotor;
-    private SparkMaxPIDController topPID, bottomPID;
+    public CANSparkMax bottomMotor, topMotor;
+    public SparkMaxPIDController topPID, bottomPID;
 
     public Shooter() {
         bottomMotor = new CANSparkMax(Constants.SHOOTER_PORT_BOTTOM, MotorType.kBrushless);
