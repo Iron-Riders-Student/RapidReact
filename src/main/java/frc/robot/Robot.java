@@ -50,37 +50,39 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (controller.getRawButtonPressed(1)) {
-            mecanumDrive.invertDrive();
-        }
-        if (controller.getRawButtonPressed(2)) {
-            intake.intakeBall();
-        } else if (controller.getRawButtonPressed(3)) {
-            intake.spitOutBall();
-        } else if (controller.getRawButtonPressed(4)) {
-            intake.stop();
-        }
-        if (controller.getRawButtonPressed(5)) {
-            indexer.extend();
-        } else if (controller.getRawButtonPressed(6)) {
-            indexer.retract();
-        }
-        if (controller.getRawButtonPressed(7)) {
-            shooter.shoot(Shooter.distanceToRPM(vision.estimateDistance()));
-        } else if (controller.getRawButtonPressed(8)) {
-            shooter.stop();
-        }
-        if (controller.getRawButton(9)) {
-            mecanumDrive.updateSpeed(0.0, 0.0, vision.steeringAssist());
-        }
-        if (controller.getRawButton(10)) {
-            mecanumDrive.updateSpeed(0.0, vision.distanceAssist(), 0.0);
-        }
+        intake.startDeployment();
+
+        // if (controller.getRawButtonPressed(1)) {
+        //     mecanumDrive.invertDrive();
+        // }
+        // if (controller.getRawButtonPressed(2)) {
+        //     intake.intakeBall();
+        // } else if (controller.getRawButtonPressed(3)) {
+        //     intake.spitOutBall();
+        // } else if (controller.getRawButtonPressed(4)) {
+        //     intake.stop();
+        // }
+        // if (controller.getRawButtonPressed(5)) {
+        //     indexer.extend();
+        // } else if (controller.getRawButtonPressed(6)) {
+        //     indexer.retract();
+        // }
+        // if (controller.getRawButtonPressed(7)) {
+        //     shooter.shoot(Shooter.distanceToRPM(vision.estimateDistance()));
+        // } else if (controller.getRawButtonPressed(8)) {
+        //     shooter.stop();
+        // }
+        // if (controller.getRawButton(9)) {
+        //     mecanumDrive.updateSpeed(0.0, 0.0, vision.steeringAssist());
+        // }
+        // if (controller.getRawButton(10)) {
+        //     mecanumDrive.updateSpeed(0.0, vision.distanceAssist(), 0.0);
+        // }
         
-        double slider = controller.getRawAxis(3) * 0.5 + 0.5;
-        mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider, controller.getRawAxis(2));
+        // double slider = controller.getRawAxis(3) * 0.5 + 0.5;
+        // mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider, controller.getRawAxis(2));
       
-        vision.updateDashboard();
-        SmartDashboard.updateValues(); // does this do anything?
+        // vision.updateDashboard();
+        // SmartDashboard.updateValues(); // does this do anything?
     }
 }
