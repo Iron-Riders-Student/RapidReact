@@ -12,6 +12,7 @@ public class Vision {
 
     public Vision() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
+        table.getEntry("pipeline").setNumber(1);
         pidController = new PIDController(Constants.TURN_P, 0.0, 0.0);
         pidController.setSetpoint(0);
         pidController.setTolerance(Constants.TURN_TOLERANCE);
