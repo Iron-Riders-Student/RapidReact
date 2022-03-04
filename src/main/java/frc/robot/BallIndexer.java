@@ -10,10 +10,10 @@ public class BallIndexer {
     }
 
     public void extend() {
-        servo.setAngle(Constants.INDEXER_EXTEND_ANGLE);
+        servo.set(.3);//(Constants.INDEXER_EXTEND_ANGLE);
     }
 
     public void retract() {
-        servo.setAngle(0);
+        servo.set(0);
     }
 }

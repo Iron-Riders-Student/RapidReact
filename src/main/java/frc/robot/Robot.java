@@ -11,6 +11,7 @@ public class Robot extends TimedRobot {
     public Shooter shooter;
     public Intake intake;
     public BallIndexer indexer;
+    int bo0lIntintake  = 0;
 
     boolean shooterRunning = false;
 
@@ -22,35 +23,48 @@ public class Robot extends TimedRobot {
         mecanumDrive = new MecanumDrive();
         intake = new Intake();
         indexer = new BallIndexer();
+        //comment this out
+        intake.finishDeployment();
     }
 
     @Override
     public void autonomousPeriodic() {
+        /*
         if (Timer.getMatchTime() > (15.0 - 3.0)) {
             intake.startDeployment();
             mecanumDrive.updateAutoSpeed(0.0, Constants.DRIVE_SPEED_AUTO, 0.0);
         } else if (Timer.getMatchTime() > (15.0 - 5.0)) {
             mecanumDrive.updateAutoSpeed(0.0, 0.0, vision.steeringAssist());
-            shooter.shoot(Shooter.distanceToRPM(vision.estimateDistance()));
+            shooter.shoot(Math.min(Shooter.distanceToRPM(vision.estimateDistance()), 2000));
         } else if (Timer.getMatchTime() > (15.0 - 8.0)) {
             indexer.extend();
-            shooter.shoot(Shooter.distanceToRPM(vision.estimateDistance()));
+            shooter.shoot(Math.min(Shooter.distanceToRPM(vision.estimateDistance()),2000));
             intake.finishDeployment();
         } else {
             indexer.retract();
             shooter.stop();
         }
+        */
     }
 
     @Override
     public void teleopPeriodic() {
         if (controller.getRawButtonPressed(5)) {
-            intake.intakeBall();
+            bo0lIntintake = 1;
         } else if (controller.getRawButtonPressed(6)) {
-            intake.spitOutBall();
+           bo0lIntintake = 2;
         } else if (controller.getRawButtonPressed(10)) {
+            bo0lIntintake = 0;
+        }
+
+        if(bo0lIntintake == 1){
+            intake.intakeBall();
+        } else if (bo0lIntintake == 2){
+            intake.spitOutBall();
+        } else {
             intake.stop();
         }
+
 
         if (controller.getRawButtonPressed(1)) {
             indexer.extend();
@@ -64,9 +78,16 @@ public class Robot extends TimedRobot {
                 shooter.stop();
                 shooterRunning = false;
             } else {
-                shooter.shoot(Shooter.distanceToRPM(vision.estimateDistance()));
+                shooter.shoot(500 /*Shooter.distanceToRPM(vision.estimateDistance())*/);
                 shooterRunning = true;
             }
+        }
+
+        if (controller.getRawButton(16)) {
+            intake.startDeployment();
+        }
+        if (controller.getRawButtonPressed(15)) {
+            intake.finishDeployment();
         }
 
         if (controller.getRawButton(13) && controller.getRawButton(12)) {
