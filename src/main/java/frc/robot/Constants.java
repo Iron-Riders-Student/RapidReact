@@ -50,6 +50,5 @@ public class Constants {
 
     // Vision
     public static final double VISION_CAMERA_ANGLE = 20;
-    // todo: 0.0
-    public static final double VISION_DELTA_HEIGHT = 106 - 8; // target - camera
+    public static final double VISION_DELTA_HEIGHT = 106 - 20; // target - camera
 }
