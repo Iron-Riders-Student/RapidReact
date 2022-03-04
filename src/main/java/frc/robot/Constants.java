@@ -5,6 +5,9 @@ public class Constants {
     public static final double DRIVE_SPEED_MULT = 0.65;
     public static final double DRIVE_SPEED_AUTO = 0.1 / DRIVE_SPEED_MULT;
 
+    // Indexer
+    public static final double INDEXER_EXTEND_ANGLE = 45;
+
     // Intake
     public static final double INTAKE_SPEED = 0.1;
     public static final double DEPLOY_ENCODER_COUNT = 4096;
@@ -23,8 +26,9 @@ public class Constants {
 
     // Automatic distancing
     public static final double KP_DIST = 0.225;
-    public static final double DIST_MAX_SPEED = 0.5;
+    public static final double DIST_MAX_SPEED = 0.3;
     public static final double OK_DISTANCE = 3;
+    public static final double TARGET_DIST = 200;
 
     // Automatic turning
     public static final double TURN_MIN_ANGLE = 1.0;
@@ -44,9 +48,8 @@ public class Constants {
     public static final int CAMERA_USB_PORT = 0;
     public static final int INDEXER_SERVO_PORT = 0;
 
-    // todo: constants below this line
-    public static final double INDEXER_EXTEND_ANGLE = 45;
-    public static final double VISION_CAMERA_ANGLE = -2;
-    public static final double TARGET_DIST = 200;
+    // Vision
+    public static final double VISION_CAMERA_ANGLE = 20;
+    // todo: 0.0
     public static final double VISION_DELTA_HEIGHT = 106 - 8; // target - camera
 }

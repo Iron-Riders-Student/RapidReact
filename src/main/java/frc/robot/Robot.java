@@ -12,6 +12,8 @@ public class Robot extends TimedRobot {
     public Intake intake;
     public BallIndexer indexer;
 
+    boolean shooterRunning = false;
+
     @Override
     public void robotInit() {
         shooter = new Shooter();
@@ -42,40 +44,44 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (controller.getRawButtonPressed(2)) {
+        if (controller.getRawButtonPressed(5)) {
             intake.intakeBall();
-        } else if (controller.getRawButtonPressed(3)) {
+        } else if (controller.getRawButtonPressed(6)) {
             intake.spitOutBall();
-        } else if (controller.getRawButtonPressed(4)) {
+        } else if (controller.getRawButtonPressed(10)) {
             intake.stop();
         }
 
-        if (controller.getRawButtonPressed(5)) {
+        if (controller.getRawButtonPressed(1)) {
             indexer.extend();
         }
-        if (controller.getRawButtonReleased(5)) {
+        if (controller.getRawButtonReleased(1)) {
             indexer.retract();
         }
-        
-        if (controller.getRawButtonPressed(7)) {
-            shooter.shoot(Shooter.distanceToRPM(vision.estimateDistance()));
-        } else if (controller.getRawButtonPressed(8)) {
-            shooter.stop();
+
+        if (controller.getRawButtonPressed(2)) {
+            if (shooterRunning) {
+                shooter.stop();
+                shooterRunning = false;
+            } else {
+                shooter.shoot(Shooter.distanceToRPM(vision.estimateDistance()));
+                shooterRunning = true;
+            }
         }
 
-        if (controller.getRawButton(9) && controller.getRawButton(10)) {
+        if (controller.getRawButton(13) && controller.getRawButton(12)) {
             mecanumDrive.updateAutoSpeed(0.0, vision.distanceAssist(), vision.steeringAssist());
-        } else if (controller.getRawButton(9)) {
+        } else if (controller.getRawButton(13)) {
             mecanumDrive.updateAutoSpeed(0.0, 0.0, vision.steeringAssist());
-        } else if (controller.getRawButton(10)) {
+        } else if (controller.getRawButton(12)) {
             mecanumDrive.updateAutoSpeed(0.0, vision.distanceAssist(), 0.0);
         } else {
             double slider = controller.getRawAxis(3) * 0.5 + 0.5;
-            mecanumDrive.updateSpeed(controller.getRawAxis(0), controller.getRawAxis(1) * slider,
-                    controller.getRawAxis(2));
+            mecanumDrive.updateSpeed(controller.getRawAxis(0) * slider, controller.getRawAxis(1) * slider,
+                    controller.getRawAxis(2) * slider);
         }
 
-        if (controller.getRawButtonPressed(1)) {
+        if (controller.getRawButtonPressed(3)) {
             mecanumDrive.invertDrive();
         }
 
