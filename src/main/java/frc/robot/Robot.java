@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
 
     public double getClampedRPM() {
         double minimum = 500;
-        double maximum = 2500;
+        double maximum = 3000;
         double aimed = Shooter.distanceToRPM(vision.estimateDistance());
         return Math.min(Math.max(aimed, minimum), maximum);
     }
