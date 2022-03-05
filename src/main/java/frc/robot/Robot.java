@@ -26,8 +26,8 @@ public class Robot extends TimedRobot {
     }
 
     public double getClampedRPM() {
-        double minimum = 500;
-        double maximum = 3000;
+        double minimum = Constants.SHOOTER_MINIMUM_SPEED;
+        double maximum = Constants.SHOOTER_MAXIMUM_SPEED;
         double aimed = Shooter.distanceToRPM(vision.estimateDistance());
         return Math.min(Math.max(aimed, minimum), maximum);
     }
@@ -43,9 +43,9 @@ public class Robot extends TimedRobot {
             mecanumDrive.updateAutoSpeed(0.0, 0.0, 0.0);
         }
 
-        if (timeFromAutoStart < 5.0) {
+        if (timeFromAutoStart < 10.0) {
             // wait for the robot to move
-        } else if (timeFromAutoStart < 7.0) {
+        } else if (timeFromAutoStart < 12.0) {
             intake.startDeployment();
         } else {
             intake.finishDeployment();
