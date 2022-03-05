@@ -13,13 +13,16 @@ public class Robot extends TimedRobot {
     public Shooter shooter;
     public Intake intake;
     public BallIndexer indexer;
-    public UsbCamera frontCamera = CameraServer.startAutomaticCapture();
+    public UsbCamera frontCamera;
 
     public int intakeState = 0;
     public boolean shooterRunning = false;
 
     @Override
     public void robotInit() {
+        frontCamera = CameraServer.startAutomaticCapture();
+        frontCamera.setResolution(640, 480);
+        frontCamera.setFPS(15);
         shooter = new Shooter();
         controller = new GenericHID(0);
         vision = new Vision();
