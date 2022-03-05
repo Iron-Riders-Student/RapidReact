@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -11,60 +13,83 @@ public class Robot extends TimedRobot {
     public Shooter shooter;
     public Intake intake;
     public BallIndexer indexer;
-    int bo0lIntintake  = 0;
+    public UsbCamera frontCamera;
 
-    boolean shooterRunning = false;
+    public int intakeState = 0;
+    public boolean shooterRunning = false;
 
     @Override
     public void robotInit() {
+        frontCamera = CameraServer.startAutomaticCapture();
+        frontCamera.setResolution(640, 480);
+        frontCamera.setFPS(15);
         shooter = new Shooter();
         controller = new GenericHID(0);
         vision = new Vision();
         mecanumDrive = new MecanumDrive();
         intake = new Intake();
         indexer = new BallIndexer();
-        //comment this out
-        intake.finishDeployment();
+    }
+
+    public double getClampedRPM() {
+        double minimum = Constants.SHOOTER_MINIMUM_SPEED;
+        double maximum = Constants.SHOOTER_MAXIMUM_SPEED;
+        double aimed = Shooter.distanceToRPM(vision.estimateDistance());
+        return Math.min(Math.max(aimed, minimum), maximum);
     }
 
     @Override
     public void autonomousPeriodic() {
-        /*
-        if (Timer.getMatchTime() > (15.0 - 3.0)) {
-            intake.startDeployment();
+        double timeFromAutoStart = 15.0 - Timer.getMatchTime();
+        if (timeFromAutoStart < 3.0) {
             mecanumDrive.updateAutoSpeed(0.0, Constants.DRIVE_SPEED_AUTO, 0.0);
-        } else if (Timer.getMatchTime() > (15.0 - 5.0)) {
+        } else if (timeFromAutoStart < 5.0) {
             mecanumDrive.updateAutoSpeed(0.0, 0.0, vision.steeringAssist());
-            shooter.shoot(Math.min(Shooter.distanceToRPM(vision.estimateDistance()), 2000));
-        } else if (Timer.getMatchTime() > (15.0 - 8.0)) {
-            indexer.extend();
-            shooter.shoot(Math.min(Shooter.distanceToRPM(vision.estimateDistance()),2000));
-            intake.finishDeployment();
         } else {
-            indexer.retract();
+            mecanumDrive.updateAutoSpeed(0.0, 0.0, 0.0);
+        }
+
+        if (timeFromAutoStart < 10.0) {
+            // wait for the robot to move
+        } else if (timeFromAutoStart < 12.0) {
+            intake.startDeployment();
+        } else {
+            intake.finishDeployment();
+        }
+
+        if (timeFromAutoStart < 5.0) {
+            // wait for the robot to move
+        } else if (timeFromAutoStart < 10.0) {
+            shooter.shoot(getClampedRPM());
+        } else {
             shooter.stop();
         }
-        */
+
+        if (timeFromAutoStart < 7.0) {
+            // wait for the shooter to get up to speed
+        } else if (timeFromAutoStart > 10.0) {
+            indexer.extend();
+        } else {
+            indexer.retract();
+        }
     }
 
     @Override
     public void teleopPeriodic() {
         if (controller.getRawButtonPressed(5)) {
-            bo0lIntintake = 1;
+            intakeState = 1;
         } else if (controller.getRawButtonPressed(6)) {
-           bo0lIntintake = 2;
+            intakeState = 2;
         } else if (controller.getRawButtonPressed(10)) {
-            bo0lIntintake = 0;
+            intakeState = 0;
         }
-
-        if(bo0lIntintake == 1){
+        if (intakeState == 1) {
             intake.intakeBall();
-        } else if (bo0lIntintake == 2){
+        } else if (intakeState == 2) {
             intake.spitOutBall();
         } else {
             intake.stop();
         }
-
 
         if (controller.getRawButtonPressed(1)) {
             indexer.extend();
@@ -78,7 +103,7 @@ public class Robot extends TimedRobot {
                 shooter.stop();
                 shooterRunning = false;
             } else {
-                shooter.shoot(500 /*Shooter.distanceToRPM(vision.estimateDistance())*/);
+                shooter.shoot(getClampedRPM());
                 shooterRunning = true;
             }
         }
@@ -90,22 +115,25 @@ public class Robot extends TimedRobot {
             intake.finishDeployment();
         }
 
-        if (controller.getRawButton(13) && controller.getRawButton(12)) {
-            mecanumDrive.updateAutoSpeed(0.0, vision.distanceAssist(), vision.steeringAssist());
-        } else if (controller.getRawButton(13)) {
-            mecanumDrive.updateAutoSpeed(0.0, 0.0, vision.steeringAssist());
-        } else if (controller.getRawButton(12)) {
-            mecanumDrive.updateAutoSpeed(0.0, vision.distanceAssist(), 0.0);
-        } else {
-            double slider = controller.getRawAxis(3) * 0.5 + 0.5;
-            mecanumDrive.updateSpeed(controller.getRawAxis(0) * slider, controller.getRawAxis(1) * slider,
-                    controller.getRawAxis(2) * slider);
-        }
-
         if (controller.getRawButtonPressed(3)) {
             mecanumDrive.invertDrive();
         }
 
-        vision.updateDashboard();
+        double strafe = 0.0;
+        double move = vision.distanceAssist();
+        double turn = vision.steeringAssist();
+        if (controller.getRawButton(13) && controller.getRawButton(12)) {
+            mecanumDrive.updateAutoSpeed(0, move, turn);
+        } else if (controller.getRawButton(13)) {
+            mecanumDrive.updateAutoSpeed(0, 0, turn);
+        } else if (controller.getRawButton(12)) {
+            mecanumDrive.updateAutoSpeed(0, move, 0);
+        } else {
+            double slider = controller.getRawAxis(3) * 0.5 + 0.5;
+            strafe = controller.getRawAxis(0) * slider;
+            move = controller.getRawAxis(1) * slider;
+            turn = controller.getRawAxis(2) * slider;
+            mecanumDrive.updateSpeed(strafe, move, turn);
+        }
     }
 }

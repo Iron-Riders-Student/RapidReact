@@ -2,11 +2,11 @@ package frc.robot;
 
 public class Constants {
     // Drivetrain
-    public static final double DRIVE_SPEED_MULT = 0.65;
+    public static final double DRIVE_SPEED_MULT = 0.5;
     public static final double DRIVE_SPEED_AUTO = 0.1 / DRIVE_SPEED_MULT;
 
     // Indexer
-    public static final double INDEXER_EXTEND_ANGLE = -100;
+    public static final double INDEXER_EXTENSION = 0.3;
 
     // Intake
     public static final double INTAKE_SPEED = 0.4;
@@ -23,6 +23,8 @@ public class Constants {
     public static final double SHOOTER_I = 0.0000007;
     public static final double SHOOTER_D = 0.0;
     public static final double SHOOTER_TOP_MOTOR_CHANGE = 1.0;
+    public static final double SHOOTER_MAXIMUM_SPEED = 3000;
+    public static final double SHOOTER_MINIMUM_SPEED = 500;
 
     // Automatic distancing
     public static final double KP_DIST = 0.225;
@@ -50,5 +52,5 @@ public class Constants {
 
     // Vision
     public static final double VISION_CAMERA_ANGLE = 20;
-    public static final double VISION_DELTA_HEIGHT = 106 - 20; // target - camera
+    public static final double VISION_DELTA_HEIGHT = 104 - 20; // target - camera
 }
