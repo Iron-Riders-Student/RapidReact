@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -11,6 +13,7 @@ public class Robot extends TimedRobot {
     public Shooter shooter;
     public Intake intake;
     public BallIndexer indexer;
+    public UsbCamera frontCamera = CameraServer.startAutomaticCapture();
 
     public int intakeState = 0;
     public boolean shooterRunning = false;
