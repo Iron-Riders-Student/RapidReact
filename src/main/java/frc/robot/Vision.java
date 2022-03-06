@@ -12,7 +12,6 @@ public class Vision {
 
     public Vision() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
-        table.getEntry("pipeline").setNumber(1);
         pidController = new PIDController(Constants.TURN_P, 0.0, 0.0);
         pidController.setSetpoint(0);
         pidController.setTolerance(Constants.TURN_TOLERANCE);
@@ -55,11 +54,12 @@ public class Vision {
 
     // Adjusts the angle facing a vision target using Limelight tx and PID
     public double steeringAssist() {
-        if (!getHasTargets() || Math.abs(getXAngleOffset()) < Constants.TURN_MIN_ANGLE) {
+        double offset = getXAngleOffset();
+        if (!getHasTargets() || Math.abs(offset) < Constants.TURN_MIN_ANGLE) {
             SmartDashboard.putNumber("Turning Adjustment", 0);
             return 0;
         }
-        double adjustment = pidController.calculate(getXAngleOffset());
+        double adjustment = pidController.calculate(offset);
         adjustment = Math.min(Constants.TURN_MAX_SPEED, Math.max(-Constants.TURN_MAX_SPEED, adjustment));
         adjustment = pidController.atSetpoint() ? 0 : -adjustment;
         SmartDashboard.putNumber("Turning Adjustment", adjustment);

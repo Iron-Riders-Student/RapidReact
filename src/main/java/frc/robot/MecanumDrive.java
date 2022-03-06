@@ -18,7 +18,7 @@ public class MecanumDrive {
         this.motors[1].setInverted(false);
         this.motors[2].setInverted(true);
         this.motors[3].setInverted(false);
-        inverted = true;
+        inverted = false;
     }
 
     public void invertDrive() {

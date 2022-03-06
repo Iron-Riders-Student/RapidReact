@@ -5,6 +5,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
     public GenericHID controller;
@@ -16,7 +17,9 @@ public class Robot extends TimedRobot {
     public UsbCamera frontCamera;
 
     public int intakeState = 0;
-    public boolean shooterRunning = false;
+    public boolean withLimelight = true;
+
+    public double startShootingTime = 0.0;
 
     @Override
     public void robotInit() {
@@ -41,6 +44,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         double timeFromAutoStart = 15.0 - Timer.getMatchTime();
+
         if (timeFromAutoStart < 3.0) {
             mecanumDrive.updateAutoSpeed(0.0, Constants.DRIVE_SPEED_AUTO, 0.0);
         } else if (timeFromAutoStart < 5.0) {
@@ -49,25 +53,24 @@ public class Robot extends TimedRobot {
             mecanumDrive.updateAutoSpeed(0.0, 0.0, 0.0);
         }
 
-        if (timeFromAutoStart < 10.0) {
-            // wait for the robot to move
-        } else if (timeFromAutoStart < 12.0) {
+        if (timeFromAutoStart < 2.0) {
             intake.startDeployment();
         } else {
             intake.finishDeployment();
+            intake.intakeBall();
         }
 
-        if (timeFromAutoStart < 5.0) {
-            // wait for the robot to move
-        } else if (timeFromAutoStart < 10.0) {
+        if (timeFromAutoStart > 3.0) {
             shooter.shoot(getClampedRPM());
-        } else {
-            shooter.stop();
         }
 
-        if (timeFromAutoStart < 7.0) {
+        if (timeFromAutoStart < 6.0) {
             // wait for the shooter to get up to speed
-        } else if (timeFromAutoStart > 10.0) {
+        } else if (timeFromAutoStart < 8.0) {
+            indexer.extend();
+        } else if (timeFromAutoStart < 10.0) {
+            indexer.retract();
+        } else if (timeFromAutoStart < 12.0) {
             indexer.extend();
         } else {
             indexer.retract();
@@ -76,36 +79,46 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (controller.getRawButtonPressed(5)) {
-            intakeState = 1;
-        } else if (controller.getRawButtonPressed(6)) {
-            intakeState = 2;
-        } else if (controller.getRawButtonPressed(10)) {
-            intakeState = 0;
+        if (controller.getRawButtonPressed(9)) {
+            withLimelight = !withLimelight;
+        }
+        SmartDashboard.putBoolean("With Limelight", withLimelight);
+
+        if (controller.getRawButtonPressed(4)) {
+            if (intakeState == 1) {
+                intakeState = 0;
+            } else {
+                intakeState = 1;
+            }
         }
         if (intakeState == 1) {
             intake.intakeBall();
-        } else if (intakeState == 2) {
-            intake.spitOutBall();
         } else {
             intake.stop();
         }
 
-        if (controller.getRawButtonPressed(1)) {
-            indexer.extend();
-        }
-        if (controller.getRawButtonReleased(1)) {
-            indexer.retract();
+        if (controller.getRawButtonPressed(1) || controller.getRawButtonPressed(6)) {
+            startShootingTime = Timer.getMatchTime();
         }
 
-        if (controller.getRawButtonPressed(2)) {
-            if (shooterRunning) {
-                shooter.stop();
-                shooterRunning = false;
-            } else {
+        if (controller.getRawButton(1)) {
+            mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
+            if (withLimelight) {
                 shooter.shoot(getClampedRPM());
-                shooterRunning = true;
+            } else {
+                shooter.shoot(1800);
             }
+            if (startShootingTime - Timer.getMatchTime() > 1.5) {
+                indexer.extend();
+            }
+        } else if (controller.getRawButton(6)) {
+            shooter.shoot(500);
+            if (startShootingTime - Timer.getMatchTime() > 1.5) {
+                indexer.extend();
+            }
+        } else {
+            indexer.retract();
+            shooter.stop();
         }
 
         if (controller.getRawButton(16)) {
@@ -119,20 +132,13 @@ public class Robot extends TimedRobot {
             mecanumDrive.invertDrive();
         }
 
-        double strafe = 0.0;
-        double move = vision.distanceAssist();
-        double turn = vision.steeringAssist();
-        if (controller.getRawButton(13) && controller.getRawButton(12)) {
-            mecanumDrive.updateAutoSpeed(0, move, turn);
-        } else if (controller.getRawButton(13)) {
-            mecanumDrive.updateAutoSpeed(0, 0, turn);
-        } else if (controller.getRawButton(12)) {
-            mecanumDrive.updateAutoSpeed(0, move, 0);
-        } else {
-            double slider = controller.getRawAxis(3) * 0.5 + 0.5;
-            strafe = controller.getRawAxis(0) * slider;
-            move = controller.getRawAxis(1) * slider;
-            turn = controller.getRawAxis(2) * slider;
+        if (controller.getRawButton(2)) {
+            mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
+        } else if (!controller.getRawButton(1)) {
+            double slider = 0.5 - controller.getRawAxis(2) * 0.5;
+            double strafe = controller.getRawAxis(0) * slider;
+            double move = controller.getRawAxis(1) * slider;
+            double turn = controller.getRawAxis(2) * slider;
             mecanumDrive.updateSpeed(strafe, move, turn);
         }
     }

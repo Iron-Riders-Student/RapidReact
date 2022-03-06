@@ -2,14 +2,14 @@ package frc.robot;
 
 public class Constants {
     // Drivetrain
-    public static final double DRIVE_SPEED_MULT = 0.5;
+    public static final double DRIVE_SPEED_MULT = 1.0;
     public static final double DRIVE_SPEED_AUTO = 0.1 / DRIVE_SPEED_MULT;
 
     // Indexer
     public static final double INDEXER_EXTENSION = 0.3;
 
     // Intake
-    public static final double INTAKE_SPEED = 0.4;
+    public static final double INTAKE_SPEED = 0.8;
     public static final double DEPLOY_ENCODER_COUNT = 4096;
     public static final double DEPLOY_SPEED = 0.1;
     public static final int DEPLOY_CURRENT_PEAK_LIMIT = 0;
@@ -33,9 +33,9 @@ public class Constants {
     public static final double TARGET_DIST = 200;
 
     // Automatic turning
-    public static final double TURN_MIN_ANGLE = 1.0;
+    public static final double TURN_MIN_ANGLE = 0.5;
     public static final double TURN_MAX_SPEED = 0.09;
-    public static final double TURN_P = 0.1;
+    public static final double TURN_P = 0.025;
     public static final double TURN_TOLERANCE = 0.01;
 
     // Ports
