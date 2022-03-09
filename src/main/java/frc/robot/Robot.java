@@ -32,6 +32,8 @@ public class Robot extends TimedRobot {
         mecanumDrive = new MecanumDrive();
         intake = new Intake();
         indexer = new BallIndexer();
+        SmartDashboard.putNumber("joystickDeadband", Constants.DEADBAND);
+        SmartDashboard.putNumber("joystickExponent", Constants.EXPONENT);
     }
 
     public double getClampedRPM() {
@@ -136,10 +138,22 @@ public class Robot extends TimedRobot {
             mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
         } else if (!controller.getRawButton(1)) {
             double slider = 0.5 - controller.getRawAxis(2) * 0.5;
-            double strafe = controller.getRawAxis(0) * slider;
-            double move = controller.getRawAxis(1) * slider;
-            double turn = controller.getRawAxis(2) * slider;
+            double strafe = joystickResponse(controller.getRawAxis(0)) * slider;
+            double move = joystickResponse(controller.getRawAxis(1)) * slider;
+            double turn = joystickResponse(controller.getRawAxis(2)) * slider;
             mecanumDrive.updateSpeed(strafe, move, turn);
         }
+    }
+
+    private double joystickResponse(double raw) {
+        double deadband = SmartDashboard.getNumber("deadband", Constants.DEADBAND);
+        double deadbanded = 0.0;
+        if (raw > deadband) {
+            deadbanded = (raw - deadband) / (1 - deadband);
+        } else if (raw < -deadband) {
+            deadbanded = (raw + deadband) / (1 - deadband);
+        }
+        double exponent = SmartDashboard.getNumber("exponent", Constants.EXPONENT) + 1;
+        return Math.pow(Math.abs(deadbanded), exponent) * Math.signum(deadbanded);
     }
 }

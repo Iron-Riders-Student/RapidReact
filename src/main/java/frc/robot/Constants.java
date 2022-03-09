@@ -2,7 +2,7 @@ package frc.robot;
 
 public class Constants {
     // Drivetrain
-    public static final double DRIVE_SPEED_MULT = 1.0;
+    public static final double DRIVE_SPEED_MULT = 1.0; // should be between 0 and 1
     public static final double DRIVE_SPEED_AUTO = 0.1 / DRIVE_SPEED_MULT;
 
     // Indexer
@@ -53,4 +53,8 @@ public class Constants {
     // Vision
     public static final double VISION_CAMERA_ANGLE = 20;
     public static final double VISION_DELTA_HEIGHT = 104 - 20; // target - camera
+
+    // Joystick
+    public static final double DEADBAND = 0.05;
+    public static final double EXPONENT = 0.0; // between 0 and 1
 }
