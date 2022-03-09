@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.beans.IndexedPropertyChangeEvent;
+import java.util.ResourceBundle.Control;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -132,6 +135,12 @@ public class Robot extends TimedRobot {
 
         if (controller.getRawButtonPressed(3)) {
             mecanumDrive.invertDrive();
+        }
+
+        if (controller.getRawButton(7)) {
+            indexer.extend();
+        } else {
+            indexer.retract();
         }
 
         if (controller.getRawButton(2)) {
