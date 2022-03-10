@@ -102,6 +102,10 @@ public class Robot extends TimedRobot {
             intake.stop();
         }
 
+        if (controller.getRawButton(8)) {
+            intake.spitOutBall();
+        }
+
         if (controller.getRawButtonPressed(1) || controller.getRawButtonPressed(6)) {
             startShootingTime = Timer.getMatchTime();
         }
