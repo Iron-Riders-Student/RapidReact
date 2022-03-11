@@ -49,6 +49,7 @@ public class Constants {
     public static final int INTAKE_DEPLOYMENT_PORT = 8;
     public static final int CAMERA_USB_PORT = 0;
     public static final int INDEXER_SERVO_PORT = 0;
+    public static final int Climber_Port = 9;
 
     // Vision
     public static final double VISION_CAMERA_ANGLE = 20;
