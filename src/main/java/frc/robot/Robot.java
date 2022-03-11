@@ -163,7 +163,7 @@ public class Robot extends TimedRobot {
         if (controller.getRawButton(8)) {
             mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
         } else if (!controller.getRawButton(1)) {
-            double slider = 1- 0.5 + controller.getRawAxis(2) * 0.5;
+            double slider = 0.5 + controller.getRawAxis(2) * 0.5;
             double strafe = joystickResponse(controller.getRawAxis(0)) * slider;
             double move = joystickResponse(controller.getRawAxis(1)) * slider;
             double turn = joystickResponse(controller.getRawAxis(3)) * slider;
