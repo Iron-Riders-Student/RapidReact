@@ -60,7 +60,7 @@ public class Constants {
     public static final double EXPONENT = 0.0; // between 0 and 1
 
     // Climber
-    public static final double climberPort = 7;
+    public static final double climberPort = 9;
     public static final double raiseMinPower = 0;
     public static final double raiseMaxPower = 0;
      public static final double lowerMinPower = 0;
