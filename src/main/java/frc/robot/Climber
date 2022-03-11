@@ -5,61 +5,42 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+// Simple Manual Climber Code
+public class Climber {
 
-public class Climber extends SubsystemBase {
-  // Create a CANSparkMax object to control the motor on the climber.
-  CANSparkMax m_motor = new CANSparkMax(Constants.climberPort, MotorType.kBrushless);
+  CANSparkMax climber_motor = new CANSparkMax(Constants.climberPort, MotorType.kBrushless);
+  public static final double raiseMinPower;
+  public static final double raiseMaxPower;
+  public static final double lowerMinPower;
+  public static final double lowerMaxPower;
 
-  // Create a RelativeEncoder object for the defined motor.
-  RelativeEncoder m_encoder;
-
-  /** Creates a new Climber. */
   public Climber() {
-    // Put the motor in brake mode.
-    m_motor.setIdleMode(IdleMode.kBrake);
-
-    // Set the encoder to motor.
-    m_encoder = m_motor.getEncoder();
+    climber_motor.setIdleMode(IdleMode.kBrake);
+    raiseMinPower = 0;
+    raiseMaxPower = 0;
+    lowerMinPower = 0;
+    lowerMaxPower = 0;
   }
 
-  /**
-   * raise - lifts the climber to prepare to hang.
-   * 
-   * @param power Voltage being applied to the motor.
-   */
-  public void raise(double power) {
-    // Apply voltage to the motor.
-    m_motor.set(power);
-
-    // Read the encoder value.
-    m_encoder.getPosition();
+   // raise the climber
+  public void raise() {
+    // Need to decide on the raiseMinPower and raiseHighpower
+    climber_motor.setOutputRange(raiseMinPower, raiseHighpower);
   }
 
-  /**
-   * lower - drops the climber.
-   * 
-   * @param power Voltage being applied to the motor.
-   */
-  public void lower(double power) {
-    // Apply voltage to the motor.
-    m_motor.set(-power);
-
-    // Read the encoder value.
-    m_encoder.getPosition();
+   //lower the climber.
+  public void lower() {
+    // Need to decide on lowerHighpower and -lowerMinpower
+    climber_motor.setOutputRange(-lowerHighpower, -lowerMinpower);
   }
 
-  /**
-   * stop - stops the motor.
-   */
+   // stops the motor.
   public void stop() {
-    // Apply no voltage to the motor.
-    m_motor.stopMotor();
+    climber_motor.stopMotor();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
   }
 }
