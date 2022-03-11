@@ -5,74 +5,39 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-<<<<<<< HEAD
-// Simple Climber Code
-public class Climber {
-
-  CANSparkMax climber_motor = new CANSparkMax(Constants.climberPort, MotorType.kBrushless);
-
-  public Climber() {
-    climber_motor.setIdleMode(IdleMode.kBrake);
-=======
 // Simple Manual Climber Code
 public class Climber {
 
   CANSparkMax climber_motor = new CANSparkMax(Constants.climberPort, MotorType.kBrushless);
-  public static final double raiseMinPower;
-  public static final double raiseMaxPower;
-  public static final double lowerMinPower;
-  public static final double lowerMaxPower;
 
   public Climber() {
     climber_motor.setIdleMode(IdleMode.kBrake);
-    raiseMinPower = 0;
-    raiseMaxPower = 0;
-    lowerMinPower = 0;
-    lowerMaxPower = 0;
->>>>>>> c161b81ca35c940ee981d6702f108eb200733e77
   }
 
    // raise the climber
   public void raise() {
-<<<<<<< HEAD
 
     // Need to find ideal power for climber
     climber_motor.set(Constants.climberPower);
 
     // Need to decide on the raiseMinPower and raiseHighpower
     climber_motor.setOutputRange(Constants.raiseMinPower, Constants.raiseHighpower);
-=======
-    // Need to decide on the raiseMinPower and raiseHighpower
-    climber_motor.setOutputRange(raiseMinPower, raiseHighpower);
->>>>>>> c161b81ca35c940ee981d6702f108eb200733e77
+
   }
 
    //lower the climber.
   public void lower() {
-<<<<<<< HEAD
 
      // Need to find ideal power for climber
     climber_motor.set(-Constants.climberPower);
 
     // Need to decide on lowerHighpower and -lowerMinpower
     climber_motor.setOutputRange(-Constants.lowerHighpower, -Constants.lowerMinpower);
-=======
-    // Need to decide on lowerHighpower and -lowerMinpower
-    climber_motor.setOutputRange(-lowerHighpower, -lowerMinpower);
->>>>>>> c161b81ca35c940ee981d6702f108eb200733e77
   }
 
    // stops the motor.
   public void stop() {
     climber_motor.stopMotor();
   }
-<<<<<<< HEAD
 }
-=======
 
-  @Override
-  public void periodic() {
-    
-  }
-}
->>>>>>> c161b81ca35c940ee981d6702f108eb200733e77
