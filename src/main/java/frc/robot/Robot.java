@@ -85,10 +85,10 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         // toggle limelight on/off
-        if (controller.getRawButtonPressed(9)) {
-            withLimelight = !withLimelight;
-        }
-        SmartDashboard.putBoolean("With Limelight", withLimelight);
+        // if (controller.getRawButtonPressed(9)) {
+        //     withLimelight = !withLimelight;
+        // }
+       // SmartDashboard.putBoolean("With Limelight", withLimelight);
 
         //intake toggle conditional
         if (controller.getRawButtonPressed(2)) {
@@ -153,7 +153,7 @@ public class Robot extends TimedRobot {
         }
 
         //Becuase we don't have match time, we use this button to shoot
-        if (controller.getRawButton(7)) {
+        if (controller.getRawButton(5)) {
             indexer.extend();
         } else {
             indexer.retract();
