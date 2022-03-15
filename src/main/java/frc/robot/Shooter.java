@@ -40,10 +40,6 @@ public class Shooter {
     }
 
     public static double distanceToRPM(double distance) {
-       return 1380 + 1.75 * distance + 0.0203 * distance * distance;
-    
-       // This data is when the ball has a psi of 3.3
-       //return 4920 + ((-56.7) * distance) + (0.266 * distance * distance);
-
+       return 1451 + (3.5 * distance) + (0.00205 * distance * distance);
     }
 }
