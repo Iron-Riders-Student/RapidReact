@@ -131,7 +131,7 @@ public class Robot extends TimedRobot {
             }
         } else if (controller.getRawButton(6)) {
             //This is incase we pick up the wrong ball
-            shooter.shoot(3000);
+            shooter.shoot(500);
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
                 indexer.extend();
             }
