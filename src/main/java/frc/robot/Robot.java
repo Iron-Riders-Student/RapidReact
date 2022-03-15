@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 
     public double getClampedRPM() {
         double minimum = Constants.SHOOTER_MINIMUM_SPEED;
-        double maximum = Constants.SHOOTER_MAXIMUM_SPEED;
+       double maximum = Constants.SHOOTER_MAXIMUM_SPEED;
         double aimed = Shooter.distanceToRPM(vision.estimateDistance());
         return Math.min(Math.max(aimed, minimum), maximum);
     }
@@ -84,6 +84,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        vision.estimateDistance();
+
         // toggle limelight on/off
         // if (controller.getRawButtonPressed(9)) {
         //     withLimelight = !withLimelight;
@@ -122,14 +124,14 @@ public class Robot extends TimedRobot {
             if (withLimelight) {
                 shooter.shoot(getClampedRPM());
             } else {
-                shooter.shoot(1800);
+                shooter.shoot(1900);
             }
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
                 indexer.extend();
             }
         } else if (controller.getRawButton(6)) {
             //This is incase we pick up the wrong ball
-            shooter.shoot(500);
+            shooter.shoot(3000);
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
                 indexer.extend();
             }
