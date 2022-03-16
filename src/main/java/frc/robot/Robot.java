@@ -17,6 +17,7 @@ public class Robot extends TimedRobot {
     public UsbCamera frontCamera;
 
     public int intakeState = 0;
+    public int indexerState = 0;
 
     public double startShootingTime = 0.0;
 
@@ -85,6 +86,19 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         vision.estimateDistance();
 
+        //Indexer toggle conditional
+        if (controller.getRawButton(1) || controller.getRawButton(5)) {
+            indexerState = 1;
+        }
+            else {
+                intakeState = 0;
+          }
+
+        // The Actual Updation part of the intake conditional
+        if (indexerState == 1) indexer.extend();
+            else indexer.retract();
+
+
         //intake toggle conditional
         if (controller.getRawButtonPressed(2)) {
             if (intakeState == 1) {
@@ -117,18 +131,18 @@ public class Robot extends TimedRobot {
             shooter.shoot(getClampedRPM());
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
                 mecanumDrive.updateAutoSpeed(0, 0, 0);
-                indexer.extend();
+                indexerState = 1;
             }
 
-            
+
         } else if (controller.getRawButton(6)) {
             //This is incase we pick up the wrong ball
             shooter.shoot(2400);
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
-                indexer.extend();
+                indexerState = 1;
             }
         } else {
-            indexer.retract();
+            indexerState = 0;
             shooter.stop();
         }
 
@@ -148,9 +162,9 @@ public class Robot extends TimedRobot {
 
         //Becuase we don't have match time, we use this button to shoot
         if (controller.getRawButton(5)) {
-            indexer.extend();
+            indexerState = 1;
         } else {
-            indexer.retract();
+            indexerState = 0;
         }
 
         //The first conditional will auto turn if the driver wants, otherwise we will use normal joystick
