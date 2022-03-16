@@ -17,7 +17,6 @@ public class Robot extends TimedRobot {
     public UsbCamera frontCamera;
 
     public int intakeState = 0;
-    public boolean withLimelight = true;
 
     public double startShootingTime = 0.0;
 
@@ -86,12 +85,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         vision.estimateDistance();
 
-        // toggle limelight on/off
-        // if (controller.getRawButtonPressed(9)) {
-        //     withLimelight = !withLimelight;
-        // }
-       // SmartDashboard.putBoolean("With Limelight", withLimelight);
-
         //intake toggle conditional
         if (controller.getRawButtonPressed(2)) {
             if (intakeState == 1) {
@@ -121,14 +114,13 @@ public class Robot extends TimedRobot {
         //Auto turning and shoot when button 1 is held down.
         if (controller.getRawButton(1)) {
             mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
-            if (withLimelight) {
-                shooter.shoot(getClampedRPM());
-            } else {
-                shooter.shoot(1900);
-            }
+            shooter.shoot(getClampedRPM());
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
+                mecanumDrive.updateAutoSpeed(0, 0, 0);
                 indexer.extend();
             }
+
+            
         } else if (controller.getRawButton(6)) {
             //This is incase we pick up the wrong ball
             shooter.shoot(2400);
