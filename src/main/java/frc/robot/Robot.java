@@ -15,6 +15,7 @@ public class Robot extends TimedRobot {
     public Intake intake;
     public BallIndexer indexer;
     public UsbCamera frontCamera;
+    public Climber climber;
 
     public int intakeState = 0;
 
@@ -31,6 +32,7 @@ public class Robot extends TimedRobot {
         mecanumDrive = new MecanumDrive();
         intake = new Intake();
         indexer = new BallIndexer();
+        climber = new Climber();
         SmartDashboard.putNumber("joystickDeadband", Constants.DEADBAND);
         SmartDashboard.putNumber("joystickExponent", Constants.EXPONENT);
     }
@@ -152,6 +154,14 @@ public class Robot extends TimedRobot {
             double move = joystickResponse(controller.getRawAxis(1)) * slider;
             double turn = joystickResponse(controller.getRawAxis(3)) * slider;
             mecanumDrive.updateSpeed(strafe, move, turn);
+        }
+
+        if (controller.getRawButton(12)) {
+            climber.raise();
+        } else if (controller.getRawButton(4)) {
+            climber.lower();
+        } else {
+            climber.stop();
         }
     }
 
