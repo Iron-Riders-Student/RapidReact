@@ -49,7 +49,8 @@ public class Constants {
     public static final int INTAKE_DEPLOYMENT_PORT = 8;
     public static final int CAMERA_USB_PORT = 0;
     public static final int INDEXER_SERVO_PORT = 0;
-    public static final int Climber_Port = 9;
+    public static final int CLIMBER_PORT_1 = 9;
+    public static final int CLIMBER_PORT_2 = 10;
 
     // Vision
     public static final double VISION_CAMERA_ANGLE = 20;
@@ -60,10 +61,5 @@ public class Constants {
     public static final double EXPONENT = 0.0; // between 0 and 1
 
     // Climber
-    public static final double climberPort = 9;
-    public static final double raiseMinPower = 0;
-    public static final double raiseMaxPower = 0;
-     public static final double lowerMinPower = 0;
-    public static final double lowerMaxPower = 0;
-    public static final double climberPower = 0;
+    public static final double CLIMBER_POWER = 1;
 }
