@@ -17,7 +17,6 @@ public class Robot extends TimedRobot {
     public UsbCamera frontCamera;
 
     public int intakeState = 0;
-    public int indexerState = 0;
 
     public double startShootingTime = 0.0;
 
@@ -38,7 +37,7 @@ public class Robot extends TimedRobot {
 
     public double getClampedRPM() {
         double minimum = Constants.SHOOTER_MINIMUM_SPEED;
-       double maximum = Constants.SHOOTER_MAXIMUM_SPEED;
+        double maximum = Constants.SHOOTER_MAXIMUM_SPEED;
         double aimed = Shooter.distanceToRPM(vision.estimateDistance());
         return Math.min(Math.max(aimed, minimum), maximum);
     }
@@ -46,16 +45,18 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         double timeFromAutoStart = 15.0 - Timer.getMatchTime();
-        //The drive conditional where we first go back, then align, then stop
+
         if (timeFromAutoStart < 3.0) {
+            // Go backwards
             mecanumDrive.updateAutoSpeed(0.0, Constants.DRIVE_SPEED_AUTO, 0.0);
         } else if (timeFromAutoStart < 5.0) {
+            // Auto turn
             mecanumDrive.updateAutoSpeed(0.0, 0.0, vision.steeringAssist());
         } else {
             mecanumDrive.updateAutoSpeed(0.0, 0.0, 0.0);
         }
 
-        //This deploys the intake
+        // This deploys the intake
         if (timeFromAutoStart < 2.0) {
             intake.startDeployment();
         } else {
@@ -63,14 +64,13 @@ public class Robot extends TimedRobot {
             intake.intakeBall();
         }
 
-        //This will start the shooter
         if (timeFromAutoStart > 3.0) {
             shooter.shoot(getClampedRPM());
         }
 
-        //This shoots the ball
+        // This shoots the ball
         if (timeFromAutoStart < 6.0) {
-            // wait for the shooter to get up to speed
+            // Wait for the shooter to get up to speed
         } else if (timeFromAutoStart < 8.0) {
             indexer.extend();
         } else if (timeFromAutoStart < 10.0) {
@@ -86,20 +86,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         vision.estimateDistance();
 
-        //Indexer toggle conditional
-        if (controller.getRawButton(1) || controller.getRawButton(5)) {
-            indexerState = 1;
-        }
-            else {
-                intakeState = 0;
-          }
-
-        // The Actual Updation part of the intake conditional
-        if (indexerState == 1) indexer.extend();
-            else indexer.retract();
-
-
-        //intake toggle conditional
+        // Intake toggle
         if (controller.getRawButtonPressed(2)) {
             if (intakeState == 1) {
                 intakeState = 0;
@@ -107,15 +94,12 @@ public class Robot extends TimedRobot {
                 intakeState = 1;
             }
         }
-        //The actual updation part of the intake conditional
         if (intakeState == 1) {
             intake.intakeBall();
         } else {
             intake.stop();
         }
 
-
-        //Reverses the intake
         if (controller.getRawButton(11)) {
             intake.spitOutBall();
         }
@@ -125,52 +109,44 @@ public class Robot extends TimedRobot {
             startShootingTime = Timer.getMatchTime();
         }
 
-        //Auto turning and shoot when button 1 is held down.
+        // Auto turning and shooting when button 1 is held
         if (controller.getRawButton(1)) {
             mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
             shooter.shoot(getClampedRPM());
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
                 mecanumDrive.updateAutoSpeed(0, 0, 0);
-                indexerState = 1;
+                indexer.extend();
             }
-
-
         } else if (controller.getRawButton(6)) {
-            //This is incase we pick up the wrong ball
-            shooter.shoot(2400);
+            // This is in case we pick up the wrong ball
+            shooter.shoot(500);
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
-                indexerState = 1;
+                indexer.extend();
             }
+        } else if (controller.getRawButton(5)) {
+            indexer.extend();
         } else {
-            indexerState = 0;
+            indexer.retract();
             shooter.stop();
         }
 
-        //This starts the deployment by calling the start deploy method
         if (controller.getRawButton(9)) {
             intake.startDeployment();
         }
-        //this will finish the deployment after the driver thinks it is deployed.
+        // This will finish the deployment after the driver thinks it is deployed
         if (controller.getRawButtonPressed(10)) {
             intake.finishDeployment();
         }
 
-        //invert the drive train
         if (controller.getRawButtonPressed(3)) {
             mecanumDrive.invertDrive();
         }
 
-        //Becuase we don't have match time, we use this button to shoot
-        if (controller.getRawButton(5)) {
-            indexerState = 1;
-        } else {
-            indexerState = 0;
-        }
-
-        //The first conditional will auto turn if the driver wants, otherwise we will use normal joystick
         if (controller.getRawButton(8)) {
+            // Auto turning without shooting
             mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
         } else if (!controller.getRawButton(1)) {
+            // Normal joystick control
             double slider = 0.5 + controller.getRawAxis(2) * 0.5;
             double strafe = joystickResponse(controller.getRawAxis(0)) * slider;
             double move = joystickResponse(controller.getRawAxis(1)) * slider;
@@ -179,7 +155,7 @@ public class Robot extends TimedRobot {
         }
     }
 
-    //This method is used to make it so that the joystic doesn't ghost.
+    // This adds a deadzone and nonlinear response to the joystick axis
     private double joystickResponse(double raw) {
         double deadband = SmartDashboard.getNumber("deadband", Constants.DEADBAND);
         double deadbanded = 0.0;
