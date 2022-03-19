@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
         climber = new Climber();
         SmartDashboard.putNumber("joystickDeadband", Constants.DEADBAND);
         SmartDashboard.putNumber("joystickExponent", Constants.EXPONENT);
+        SmartDashboard.putBoolean("in shooter range", false);
     }
 
     public double getClampedRPM() {
@@ -86,7 +87,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        vision.estimateDistance();
+        Double dist = vision.estimateDistance();
+        SmartDashboard.putBoolean("in shooter range", (dist < 217 && dist > 111) );
 
         // Intake toggle
         if (controller.getRawButtonPressed(2)) {
