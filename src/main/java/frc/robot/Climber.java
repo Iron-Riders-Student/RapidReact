@@ -9,11 +9,15 @@ public class Climber {
     CANSparkMax climber_motor_2;
 
     public Climber() {
+        int currentLimit = 10;
+
         climber_motor_1 = new CANSparkMax(Constants.CLIMBER_PORT_1, MotorType.kBrushless);
         climber_motor_1.setIdleMode(IdleMode.kBrake);
+        climber_motor_1.setSmartCurrentLimit(currentLimit);
 
         climber_motor_2 = new CANSparkMax(Constants.CLIMBER_PORT_2, MotorType.kBrushless);
         climber_motor_2.setIdleMode(IdleMode.kBrake);
+        climber_motor_2.setSmartCurrentLimit(currentLimit);
     }
 
     public void raise() {

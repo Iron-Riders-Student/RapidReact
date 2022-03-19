@@ -117,21 +117,20 @@ public class Robot extends TimedRobot {
             shooter.shoot(getClampedRPM());
             if (startShootingTime - Timer.getMatchTime() > 1.5) {
                 mecanumDrive.updateAutoSpeed(0, 0, 0);
-                indexer.extend();
             }
         } else if (controller.getRawButton(6)) {
             // This is in case we pick up the wrong ball
             shooter.shoot(500);
-            if (startShootingTime - Timer.getMatchTime() > 1.5) {
-                indexer.extend();
-            }
-        } else if (controller.getRawButton(5)) {
+        } else{
+            shooter.stop();
+        }
+        
+        if (controller.getRawButton(5)) {
             indexer.extend();
         } else {
             indexer.retract();
-            shooter.stop();
         }
-
+        
         if (controller.getRawButton(9)) {
             intake.startDeployment();
         }
@@ -149,7 +148,7 @@ public class Robot extends TimedRobot {
             mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
         } else if (!controller.getRawButton(1)) {
             // Normal joystick control
-            double slider = 0.5 + controller.getRawAxis(2) * 0.5;
+            double slider = 1.0; //0.5 + controller.getRawAxis(2) * 0.5;
             double strafe = joystickResponse(controller.getRawAxis(0)) * slider;
             double move = joystickResponse(controller.getRawAxis(1)) * slider;
             double turn = joystickResponse(controller.getRawAxis(3)) * slider;

@@ -33,8 +33,8 @@ public class Constants {
     public static final double TARGET_DIST = 200;
 
     // Automatic turning
-    public static final double TURN_MIN_ANGLE = 0.5;
-    public static final double TURN_MAX_SPEED = 0.09;
+    public static final double TURN_MIN_ANGLE = 0.3;
+    public static final double TURN_MAX_SPEED = 0.2;
     public static final double TURN_P = 0.025;
     public static final double TURN_TOLERANCE = 0.01;
 
