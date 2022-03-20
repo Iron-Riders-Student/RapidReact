@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Double dist = vision.estimateDistance();
-        SmartDashboard.putBoolean("in shooter range", (dist < 217 && dist > 111) );
+        SmartDashboard.putBoolean("in shooter range", (dist < 165 && dist > 87) );
 
         // Intake toggle
         if (controller.getRawButtonPressed(2)) {
@@ -129,6 +129,7 @@ public class Robot extends TimedRobot {
         
         if (controller.getRawButton(5)) {
             indexer.extend();
+
         } else {
             indexer.retract();
         }

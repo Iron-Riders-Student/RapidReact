@@ -54,7 +54,7 @@ public class Vision {
 
     // Adjusts the angle facing a vision target using Limelight tx and PID
     public double steeringAssist() {
-        double offset = getXAngleOffset();
+        double offset = getXAngleOffset() - Math.atan(12 / estimateDistance());
         if (!getHasTargets() || Math.abs(offset) < Constants.TURN_MIN_ANGLE) {
             SmartDashboard.putNumber("Turning Adjustment", 0);
             return 0;

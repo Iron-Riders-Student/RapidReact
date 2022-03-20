@@ -42,6 +42,6 @@ public class Shooter {
     public static double distanceToRPM(double distance) {
        //return 1451 + (3.5 * distance) + (0.00205 * (distance * distance));
        //return 2100 + (-6.95 * distance) + (0.0431 * distance * distance);
-       return 1911.5 + (-3.0514 * distance) + (0.0262 * distance * distance);
+       return 1921.5 + (-3.0514 * distance) + (0.0262 * distance * distance);
     }
 }
