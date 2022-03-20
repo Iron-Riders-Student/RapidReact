@@ -67,18 +67,18 @@ public class Robot extends TimedRobot {
             intake.intakeBall();
         }
 
-        if (timeFromAutoStart > 3.0) {
+        if (timeFromAutoStart > 2.5) {
             shooter.shoot(getClampedRPM());
         }
 
         // This shoots the ball
-        if (timeFromAutoStart < 6.0) {
+        if (timeFromAutoStart < 5.5) {
             // Wait for the shooter to get up to speed
-        } else if (timeFromAutoStart < 8.0) {
+        } else if (timeFromAutoStart < 7.5) {
             indexer.extend();
-        } else if (timeFromAutoStart < 10.0) {
+        } else if (timeFromAutoStart < 9.5) {
             indexer.retract();
-        } else if (timeFromAutoStart < 12.0) {
+        } else if (timeFromAutoStart < 12.5) {
             indexer.extend();
         } else {
             indexer.retract();
