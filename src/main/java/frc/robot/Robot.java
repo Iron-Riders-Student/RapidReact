@@ -19,7 +19,7 @@ public class Robot extends TimedRobot {
 
     public int intakeState = 0;
 
-    public double startShootingTime = 0.0;
+    public int startShootingTime = 0; // milliseconds
 
     @Override
     public void robotInit() {
@@ -87,8 +87,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        Double dist = vision.estimateDistance();
-        SmartDashboard.putBoolean("in shooter range", (dist < 165 && dist > 87) );
+        if (startShootingTime > 0) {
+            startShootingTime -= 20;
+        }
+
+        double dist = vision.estimateDistance();
+        SmartDashboard.putBoolean("in shooter range", (dist < 165 && dist > 87));
 
         // Intake toggle
         if (controller.getRawButtonPressed(2)) {
@@ -108,32 +112,32 @@ public class Robot extends TimedRobot {
             intake.spitOutBall();
         }
 
-        //This starts the timer for the ball launching 
-        if (controller.getRawButtonPressed(1) || controller.getRawButtonPressed(6)) {
-            startShootingTime = Timer.getMatchTime();
+        // This starts the timer for the ball launching
+        if (controller.getRawButtonPressed(1) || controller.getRawButtonPressed(7)) {
+            startShootingTime = 1000;
         }
 
         // Auto turning and shooting when button 1 is held
         if (controller.getRawButton(1)) {
             mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
             shooter.shoot(getClampedRPM());
-            if (startShootingTime - Timer.getMatchTime() > 1.5) {
+            if (startShootingTime <= 0) {
                 mecanumDrive.updateAutoSpeed(0, 0, 0);
             }
-        } else if (controller.getRawButton(6)) {
+        } else if (controller.getRawButton(7)) {
             // This is in case we pick up the wrong ball
             shooter.shoot(500);
-        } else{
+        } else {
             shooter.stop();
         }
-        
-        if (controller.getRawButton(5)) {
-            indexer.extend();
 
+        if (controller.getRawButton(5)
+                || (controller.getRawButton(1) || controller.getRawButton(7)) && startShootingTime <= 0) {
+            indexer.extend();
         } else {
             indexer.retract();
         }
-        
+
         if (controller.getRawButton(9)) {
             intake.startDeployment();
         }
@@ -151,7 +155,7 @@ public class Robot extends TimedRobot {
             mecanumDrive.updateAutoSpeed(0, 0, vision.steeringAssist());
         } else if (!controller.getRawButton(1)) {
             // Normal joystick control
-            double slider = 1.0; //0.5 + controller.getRawAxis(2) * 0.5;
+            double slider = 1.0; // 0.5 + controller.getRawAxis(2) * 0.5;
             double strafe = joystickResponse(controller.getRawAxis(0)) * slider;
             double move = joystickResponse(controller.getRawAxis(1)) * slider;
             double turn = joystickResponse(controller.getRawAxis(3)) * slider;

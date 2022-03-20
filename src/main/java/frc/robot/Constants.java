@@ -36,7 +36,7 @@ public class Constants {
     public static final double TURN_MIN_ANGLE = 0.3;
     public static final double TURN_MAX_SPEED = 0.18;
     public static final double TURN_P = 0.025;
-    public static final double TURN_TOLERANCE = 0.02;
+    public static final double TURN_TOLERANCE = 0.01;
 
     // Ports
     public static final int WHEEL_PORT_FRONT_LEFT = 1;
