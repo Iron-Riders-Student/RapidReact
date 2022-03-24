@@ -4,6 +4,7 @@ public class Constants {
     // Drivetrain
     public static final double DRIVE_SPEED_MULT = 1.0; // should be between 0 and 1
     public static final double DRIVE_SPEED_AUTO = 0.1 / DRIVE_SPEED_MULT;
+    public static final int DRIVE_CURRENT_LIMIT = 40; 
 
     // Indexer
     public static final double INDEXER_EXTENSION = 0.3;

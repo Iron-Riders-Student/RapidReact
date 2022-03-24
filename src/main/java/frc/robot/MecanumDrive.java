@@ -19,6 +19,11 @@ public class MecanumDrive {
         this.motors[2].setInverted(true);
         this.motors[3].setInverted(false);
         inverted = false;
+
+        motors[0].setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+        motors[1].setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+        motors[2].setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+        motors[3].setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
     }
 
     public void invertDrive() {
