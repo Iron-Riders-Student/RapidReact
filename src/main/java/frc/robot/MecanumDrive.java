@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class MecanumDrive {
     private boolean inverted;
@@ -20,10 +21,7 @@ public class MecanumDrive {
         this.motors[3].setInverted(false);
         inverted = false;
 
-        motors[0].setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
-        motors[1].setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
-        motors[2].setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
-        motors[3].setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+        SmartDashboard.putNumber("driveCurrentLimit", Constants.DRIVE_CURRENT_LIMIT);
     }
 
     public void invertDrive() {
@@ -39,6 +37,12 @@ public class MecanumDrive {
     }
 
     private void updateSpeedInternal(double strafe, double drive, double turn, boolean useInverted) {
+        int limit = (int) Math.round(SmartDashboard.getNumber("driveCurrentLimit", Constants.DRIVE_CURRENT_LIMIT));
+        motors[0].setSmartCurrentLimit(limit);
+        motors[1].setSmartCurrentLimit(limit);
+        motors[2].setSmartCurrentLimit(limit);
+        motors[3].setSmartCurrentLimit(limit);
+
         double[] speeds = new double[4];
         if (useInverted && inverted) {
             speeds[0] = 0 + strafe - drive + turn;
