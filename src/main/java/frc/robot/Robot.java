@@ -1,7 +1,14 @@
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -47,42 +54,15 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        double timeFromAutoStart = 15.0 - Timer.getMatchTime();
-
-        if (timeFromAutoStart < 3.0) {
-            // Go backwards
-            mecanumDrive.updateAutoSpeed(0.0, Constants.DRIVE_SPEED_AUTO, 0.0);
-        } else if (timeFromAutoStart < 5.0) {
-            // Auto turn
-            mecanumDrive.updateAutoSpeed(0.0, 0.0, vision.steeringAssist());
-        } else {
-            mecanumDrive.updateAutoSpeed(0.0, 0.0, 0.0);
-        }
-
-        // This deploys the intake
-        if (timeFromAutoStart < 2.0) {
-            intake.startDeployment();
-        } else {
-            intake.finishDeployment();
-            intake.intakeBall();
-        }
-
-        if (timeFromAutoStart > 2.5) {
-            shooter.shoot(getClampedRPM());
-        }
-
-        // This shoots the ball
-        if (timeFromAutoStart < 5.5) {
-            // Wait for the shooter to get up to speed
-        } else if (timeFromAutoStart < 7.5) {
-            indexer.extend();
-        } else if (timeFromAutoStart < 9.5) {
-            indexer.retract();
-        } else if (timeFromAutoStart < 12.5) {
-            indexer.extend();
-        } else {
-            indexer.retract();
-        }
+        String trajectoryJSON = "paths/part1.wpilib.json";
+        Trajectory trajectory = new Trajectory();
+        
+           try {
+              Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+              trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+           } catch (IOException ex) {
+              DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+           }
     }
 
     @Override
