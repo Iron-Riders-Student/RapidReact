@@ -63,4 +63,10 @@ public class Constants {
 
     // Climber
     public static final double CLIMBER_POWER = 1;
+
+    //AutoPath
+    public static final double DT = 0.05;
+    public static final double MAX_VELOCITY =1;
+    public static final double MAX_ACCELERATION = .25;
+    public static final double MAX_JERK = .25;
 }
